@@ -94,7 +94,18 @@ Taken together, the combination of a cluster, account and namespace represent a 
 
 The Kubernetes target is the glue between the physical (i.e. separated clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and individual deployments that take place in those environments, which octopus models as roles.
 
+## Concepts overview
 
+The following table matches general concepts to their matching implementations in both Kubernetes and Octopus:
+
+| General Concept | In Kubernetes | In Octopus |
+|-|-|-|
+| Environments | A cluster or namespace | Environment |
+| Account | Service account | Token account |
+| | Username and password account | Username/password account |
+| | Certificate account | Certificate |
+| Deployment category | May be part of the namespace e.g. `frontend` in the `development-frontend` namespace.  | Role |
+| Security boundary | Cluster, namespace and account | Kubernetes target |
 
 
 
