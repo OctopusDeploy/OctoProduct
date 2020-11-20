@@ -87,12 +87,15 @@ In general terms, roles grant access to Kubernetes resources, and role bindings 
 
 The recommended strategy is to have service accounts with the minimum level of permissions required to complete a single deployment to an environment. This provides a guarantee that a deployment to one environment, such as the development environment, can not accidentally overwrite resources in another environment, such as the test or production environments.
 
-
 ## Modelling Kubernetes environments in Octopus
 
 Taken together, the combination of a cluster, account and namespace represent a security boundary into which a deployment can be performed. In Octopus, this security boundary is represented as a Kubernetes target.
 
-The Kubernetes target is the glue between the physical (i.e. separated clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and individual deployments that take place in those environments, which octopus models as roles.
+The Kubernetes target is the glue between the physical (i.e. separated clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and individual deployments that take place in those environments, which Octopus models as roles.
+
+## The sample deployment
+
+To demonstrate repeatable deployments, we'll deploy a sample application with a frontend and backend component to the development, test, and production environments. We'll create the development and test environments in one Kubernetes cluster, and the production environment in a second Kubernetes cluster.
 
 ## Concepts overview
 
