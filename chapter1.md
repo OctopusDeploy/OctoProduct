@@ -183,7 +183,7 @@ Targets and other entities like accounts and certificates can be created in Octo
 
 To allow dynamic infrastructure to be created in an environment, the **Allow managing dynamic infrastructure** option must be enabled on that environment:
 
-![](dymamic-infrastructure.png "width=500")
+![](dynamic-infrastructure.png "width=500")
 :::
 
 ## Conclusion
