@@ -203,6 +203,16 @@ To allow dynamic infrastructure to be created in an environment, the **Allow man
 ![](dynamic-infrastructure.png "width=500")
 :::
 
+:::hint
+**Concept explanation: API and REST API**
+
+An Application Programming Interface (API) defines how applications interact with each other.
+
+A REpresentational State Transfer Application Programming Interface (REST API) adheres to the semantics of the Hypertext Transfer Protocol (HTTP), which is the protocol used by web browsers. HTTP is ubiquitous, and so APIs built on top of it are easy to expose and access.
+
+HTTP clearly identifies and differentiates interactions that result in information being retrieved, created, updated or deleted. REST APIs expose their underlying platform respecting these methods of interacting with information.
+:::
+
 We create a fourth environment called **Admin** that will represent task run at the cluster level.
 
 ![](environments.png "width=500")
@@ -258,16 +268,6 @@ Runbooks are also a series of steps executed sequentially, but can be run agains
 :::
 
 We will use these two administrative targets to dynamically create six additional targets representing the six namespaces in Kubernetes.
-
-:::hint
-**Concept explanation: API and REST API**
-
-An Application Programming Interface (API) defines how applications interact with each other.
-
-A REpresentational State Transfer Application Programming Interface (REST API) adheres to the semantics of the Hypertext Transfer Protocol (HTTP), which is the protocol used by web browsers. HTTP is ubiquitous, and so APIs built on top of it are easy to expose and access.
-
-HTTP clearly identifies and differentiates interactions that result in information being retrieved, created, updated or deleted. REST APIs expose their underlying platform respecting these methods of interacting with information.
-:::
 
 ## Creating the initial Octopus targets
 
