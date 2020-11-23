@@ -331,33 +331,31 @@ A URL and an endpoint are the same thing. You can paste an endpoint into your br
 
 This process will be done twice to create two Kubernetes targets called **Non-Prod Admin** and **Prod-Admin**.
 
+## Creating the cluster admin project
+
+Start by creating a new project in Octopus called **Cluster Admin**.
+
+A project holds a deployment process and runbooks, along with project level variables and other settings relating to deployments and operations tasks.
+
+A project can contain step deployment process to deploy one or more applications, or one or more runbooks to perform operations tasks, or a combination of both a deployment process and runbooks.
+
+By sharing variables, a deployment process and the runbooks used to maintain the deployed application can be defined in one central location.
+
 ## Creating the environment and role specific targets
 
-We now have two Kubernetes targets representing the two clusters. We will uses these targets to perform cluster wide actions. The first cluster wide actions we will perform is to:
+We will use this project to host runbooks that execute against the two admin Kubernetes targets to automate the creation of the rest of the Kubernetes and Octopus infrastructure. These runbooks will:
 
-* Create the six role and environment specific namespaces, 
-* Create the six service accounts that will be used to deploy into them, 
-* Create the six role and role bindings to grant the service accounts access to their (and only to their) namespace, and
+* Create the six roles and environment specific namespaces.
+* Create the six service accounts that will be used to deploy into the namespaces.
+* Create the six role and role bindings to grant the service accounts access to their (and only to their) namespace.
 * Create the six targets in Octopus to represent the role and environment namespaces in the cluster.
 
-That is a lot of resources to create, but we can automate most of it through a runbook and a community step template designed to create everything for us.
+That is a lot of resources to create, but we can automate much of it using a community step template designed to create everything for us.
 
 :::hint
 **Concept explanation: Community step templates**
 
 The configuration of individual steps in Octopus can be captured as a template, allowing them to be reused. These templates can be shared with other Octopus users via the [Octopus Deploy Library](https://library.octopus.com/listing), which is a central, shared library of step templates. The steps included in the library are called community step templates.
-:::
-
-Start by creating a new project in Octopus called **Cluster Admin**.
-
-:::hint
-**Concept explanation: Project**
-
-A project holds a deployment process and runbooks, although with project level variables and other settings relating to deployments and operations tasks.
-
-A project can contain step deployment process to deploy one or more applications, or one or more runbooks to perform operations tasks, or a combination of both a deployment process and runbooks.
-
-By sharing variables, a deployment process and the runbooks used to maintain the deployed application can be defined in one central location.
 :::
 
 Add a runbook called **Create Targets**. The runbook will have two steps, both based on the **Kubernetes - Create Service Account and Target** community step template.
@@ -389,12 +387,12 @@ Other target types, like the Kubernetes target, capture the details required to 
 
 There is a one to many relationship between deployments and targets. For example, if you had three virtual machines configured as tentacle targets, with each of the targets having the role `webapp`, and a deployment step configured to execute on targets with the role of `webapp`, the step would perform the deployment three times - one for each target.
 
-Workers are interchangeable execution locations where steps can be run without a target, or on behalf of a target. When a worker is required, one is selected from a worker pool, the step is executed, and the worker is returned to the pool.
+Workers are interchangeable compute resources where steps can be run without a target, or on behalf of a target. When a worker is required, one is selected from a worker pool, the step is executed, and the worker is returned to the pool.
 
 All Kubernetes steps in Octopus run on a worker, on behalf of a target. 
 :::
 
-The **Role** field defines the role that will be assigned to the newly created Kubernetes target. The first step will create targets with the role `frontend` to represent our web application, and the second step will create targets with the role `backend` to represent our database
+The **Role** field defines the role that will be assigned to the newly created Kubernetes target. The first step will create targets with the role `frontend` to represent our web application, and the second step will create targets with the role `database` to represent our database.
 
 The **Namespace** field defines the Kubernetes namespace that will host the service account, role and role binding created by the step. The first step will create a namespace called `#{Octopus.Environment.Name | ToLower}-database`, and the second step will create a namespace called `#{Octopus.Environment.Name | ToLower}-frontend`. We make use of variable templates to build the final value from the name of the environment and a fixed suffix.
 
