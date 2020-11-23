@@ -331,7 +331,7 @@ Kubernetes uses the same network stack as your browser to communicate with it's 
 A URL and an endpoint are the same thing. You can paste an endpoint into your browser, although you will likely see a response that only makes sense to a programmer rather than a usable web page.
 :::
 
-This process is repeated to create the **Prod-Admin** target, scoped to the **Admin** and **Production** environments:
+This process is repeated to create the **Production Admin** target, scoped to the **Admin** and **Production** environments:
 
 ![](production-admin.png "width=500")
 
@@ -349,24 +349,24 @@ By sharing variables, a deployment process and the runbooks used to maintain the
 
 ## Creating the environment and role specific targets
 
-We will use this project to host runbooks that execute against the two admin Kubernetes targets to automate the creation of the rest of the Kubernetes and Octopus infrastructure. These runbooks will:
+We will use this project to host runbooks that execute against the two admin Kubernetes targets to automate the creation of the remaining Kubernetes and Octopus infrastructure. These runbooks will:
 
 * Create the six roles and environment specific namespaces.
 * Create the six service accounts that will be used to deploy into the namespaces.
 * Create the six role and role bindings to grant the service accounts access to their (and only to their) namespace.
 * Create the six targets in Octopus to represent the role and environment namespaces in the cluster.
 
-That is a lot of resources to create, but we can automate much of it using a community step template designed to create everything for us.
+That is a lot of resources to create, but we can automate much of it using a community step template specifically designed to create these resources.
 
 :::hint
 **Concept explanation: Community step templates**
 
-The configuration of individual steps in Octopus can be captured as a template, allowing them to be reused. These templates can be shared with other Octopus users via the [Octopus Deploy Library](https://library.octopus.com/listing), which is a central, shared library of step templates. The steps included in the library are called community step templates.
+The configuration of individual steps in Octopus can be captured as a template, allowing them to be reused. These templates can be shared with other Octopus users via the [Octopus Deploy Library](https://library.octopus.com/listing). The steps included in the library are called community step templates.
 :::
 
 Add a runbook called **Create Targets**. The runbook will have two steps, both based on the **Kubernetes - Create Service Account and Target** community step template.
 
-The steps will both run on behalf of targets with the **admin** role.
+BothThe steps will run on behalf of targets with the **admin** role.
 
 :::hint
 **Concept explanation: Run on worker, run on behalf of a target, run on target**
@@ -375,15 +375,15 @@ Steps can be executed in three different ways, defined under the **Execution Loc
 
 The **Run once on worker** option executes the step on a worker. The executing step has no knowledge of a target, and so is typically used by steps that perform work through external APIs. With this option selected, a step will be executed once per deployment.
 
-The **Run on a worker on behalf of each deployment target** option executes the step on a worker, but with the context of each target that matches the selected role and environment available to the step. With this option selected, a step will be executed once for each matching target.
+The **Run on a worker on behalf of each deployment target** option executes the step on a worker, but in the context of each target that matches the selected role and environment available to the step. With this option selected, a step will be executed once for each matching target.
 
-The **Run on each deployment target** option executes the step on the target. This is to execute code on a physical machine or VM with a tentacle installed. With this option selected, a step will be executed once for each matching target.
+The **Run on each deployment target** option executes the step on the target. This is to execute code on a physical machine or virtual machine (VM) with a tentacle installed. With this option selected, a step will be executed once for each matching target.
 :::
 
 :::hint
 **Concept explanation: Tentacles**
 
-An Octopus tentacle is an agent that is installed on a physical machine or virtual machine. Tentacles execute steps directly on the target machine, and are used to copy artifacts, run scripts, or perform deployments from a process running on target machine's operating system.
+An Octopus tentacle is an agent that is installed on a physical machine or VM. Tentacles execute steps directly on the target machine, and are used to copy artifacts, run scripts, or perform deployments from a process running on target machine's operating system.
 
 Other target types, like the Kubernetes target, capture the details required to connect to the target, but do not run on the target. Kubernetes targets are used to configure the Kubernetes configuration file used by the `kubectl` executable, which allows deployments and operations tasks to be performed on the Kubernetes cluster.
 :::
@@ -391,7 +391,7 @@ Other target types, like the Kubernetes target, capture the details required to 
 :::hint
 **Concept explanation: Workers**
 
-There is a one to many relationship between deployments and targets. For example, if you had three virtual machines configured as tentacle targets, with each of the targets having the role `webapp`, and a deployment step configured to execute on targets with the role of `webapp`, the step would perform the deployment three times - one for each target.
+There is a one to many relationship between deployment steps and targets. For example, if you had three virtual machines configured as tentacle targets, with each of the targets having the role `webapp`, and a deployment step configured to execute on targets with the role of `webapp`, the step would perform the deployment three times - one for each target.
 
 Workers are interchangeable compute resources where steps can be run without a target, or on behalf of a target. When a worker is required, one is selected from a worker pool, the step is executed, and the worker is returned to the pool.
 
@@ -405,7 +405,7 @@ The **Namespace** field defines the Kubernetes namespace that will host the serv
 :::hint
 **Concept explanation: Variable templates**
 
-Most fields in Octopus steps accept a value that can be constructed from variables. These variables are referenced in a marker that starts with a pound, open curly bracket (`#{`), the name of the variable, and a closing curly bracket (`}`).
+Octopus step fields accept a value that can be constructed from variables. These variables are referenced in a marker that starts with a pound, open curly bracket (`#{`), the name of the variable, and a closing curly bracket (`}`).
 
 Filters can be applied to the variable after a pipe symbol (`|`). Filters process the value returned by the variable in some way. For example you can convert the value to upper case characters with the `ToUpper` filter or lowercase characters with the `ToLower` filter. The [documentation](https://octopus.com/docs/projects/variables/variable-filters) contains a complete list of the available filters.
 :::
@@ -414,18 +414,22 @@ When the step is run, the namespace configured in the step will be created if it
 
 Each service account has a corresponding Kubernetes secret that contains the token used for authentication. The step will read this secret and create an Octopus Token account with the credentials.
 
-Finally a Kubernetes target will be created configured with the token account and defaulting to the new namespace. Because the token authenticates as the associated service account, and the service account only has access to its own namespace, the Octopus target can only be used to deploy to a single namespace. This ensures that deployments can not leak between environments/namespaces.
+Finally a Kubernetes target will be created configured with the token account and defaulting to the new namespace. Because the token authenticates as the associated service account, and the service account only has access to its own namespace, the Octopus target can only be used to deploy to a single namespace. This ensures that deployments can not leak between environments/namespaces:
 
 ![](runbooks.png "width=500")
 
-Execute the runbooks against the development, test and production environments. The steps will create all the required Kubernetes resources and Octopus entities, resulting in a total of eight targets in our Octopus space.
+*The runbook used to create the Kubernetes and Octopus deployment infrastructure.*
+
+Run the runbooks against the development, test and production environments. The steps will create all the required Kubernetes resources and Octopus entities, resulting in a total of eight targets in our Octopus space:
 
 ![](targets.png "width=500")
+
+*The targets created by the runbook.*
 
 :::hint
 **Concept explanation: Spaces**
 
-Spaces are hard boundaries that are used to partition a single Octopus instance allowing multiple teams or projects to work independently. Most Octopus entities are scoped to a single space and can not be shared across spaces.
+Spaces are hard boundaries that are used to partition a single Octopus instance, allowing multiple teams or projects to work independently. Most Octopus entities are scoped to a single space and can not be shared across spaces.
 :::
 
 ## Creating the feed
@@ -435,31 +439,27 @@ The Docker images we'll be deploying to Kubernetes have been build and published
 :::hint
 **Concept explanation: Docker image**
 
-A Docker image is a specially formatted collection of files that represents an operating system file system, along with any associated applications, such as any application you create and copy into the Docker image when it is built.
+A Docker image is a specially formatted collection of files that represents an operating system (OS) file system, along with any associated applications, such as the application you create and copy into the Docker image when it is built.
 :::
 
 :::hint
 **Concept explanation: Docker registry and repository**
 
-A Docker registry is a service that hosts one or more Docker repositories. For example, [Docker Hub](https://hub.docker.com) is a large Docker registry hosting thousands of Docker repositories for open source projects. Most cloud providers offer a Docker registry service, and you can host one yourself with tools like [Harbor](https://goharbor.io/), [Artifactory](https://jfrog.com/artifactory/), or [Quay.io](https://quay.io/).
+A Docker registry is a service that hosts one or more Docker repositories. For example, [Docker Hub](https://hub.docker.com) is a large Docker registry hosting thousands of Docker repositories for open source projects. Most cloud providers offer a Docker registry service, or you can host one yourself with tools like [Harbor](https://goharbor.io/), [Artifactory](https://jfrog.com/artifactory/), or [Quay.io](https://quay.io/).
 
-A Docker repository hold multiple tagged copies of a Docker image. For example, the Docker repository 
+A Docker repository hold multiple tagged instances of a Docker image. For example, the Docker repository 
 at https://hub.docker.com/r/octopussamples/randomquotesjava holds the various tagged octopussamples/randomquotesjava images.
 :::
 
-To access the Docker images hosted by a Docker registry, we create a feed.
-
-:::hint
-**Concept explanation: Feeds**
-
-A feed in Octopus represents a collection of versioned packages that can be selected, and optionally downloaded, when creating a release.
-:::
+To access the Docker images hosted by a Docker registry, we create a feed. A feed in Octopus represents a collection of versioned packages that can be selected, and optionally downloaded, when creating a release.
 
 The feed is of type **Docker Container Registry**, and the URL to access the Docker Hub Registry is https://index.docker.io.
 
-No credentials are required, as we will be selecting images from public Docker repositories.
+No credentials are required, as we will be selecting images from public Docker repositories:
 
 ![](docker-feed.png "width=500")
+
+*The Docker Hub feed.*
 
 :::hint
 **Concept differentiation: Docker registry and the built-in feed**
@@ -473,7 +473,7 @@ The built-in feed does not function as a Docker registry and does not host Docke
 
 We are now in a position to create the deployment projects for our frontend web application and our backend database application.
 
-We'll start with the backend database. Create a project called **RandomQuotes Backend**. In the **Process** section, add the step **Deploy Kubernetes containers**. Configure the step to execute on behalf of the **database** role.
+We'll start with the backend database. Create a project called **RandomQuotes Backend**. In the **Process** section, add a **Deploy Kubernetes containers** step. Configure the step to execute on behalf of the **database** role.
 
 Select **Deployment** from the **Resource Type** section. This configures the step to deploy a Kubernetes deployment resource.
 
