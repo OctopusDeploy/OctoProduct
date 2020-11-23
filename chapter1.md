@@ -187,7 +187,7 @@ To allow dynamic infrastructure to be created in an environment, the **Allow man
 :::
 
 :::hint
-**Concept explanation: API**
+**Concept explanation: API and REST API**
 
 An Application Programming Interface (API) defines how applications interact with each other.
 
@@ -542,6 +542,14 @@ Kubernetes services expose the pods behind them with the same hostname as the na
 
 The **SPRING_PROFILES_ACTIVE** environment variable configures the name of the Spring profile used by our sample Spring application called "Random Quotes". The name of the active profile is displayed by the web application, which means we will be able to observe the value of this environment variable as we progress the deployment through the environments.
 
+:::hint
+**Concept explanation: Spring**
+
+[Spring](https://spring.io/) is a popular Java framework for build web applications. Spring based applications have extensive support for configuration via environment variables.
+
+The sample application [Random Quotes](https://github.com/OctopusSamples/RandomQuotes-Java) is built on top of Spring.
+:::
+
 Note that we have set the value of the **SPRING_PROFILES_ACTIVE** environment variable to **#{Octopus.Environment.Name}**. The `Octopus.Environment.Name` variable is exposed by Octopus as the name of the environment that is being deployed to. We use this variable here as an example of an environment specific variable that customizes our deployment between environments.
 
 Repeatable deployments means keeping your deployments as similar as possible between environments, but there will always be some environment specific configuration required in any real world application deployment. Environment specific variables is one way Octopus can accommodate these environmental differences.
@@ -572,12 +580,36 @@ Once the deployment has succeeded, a public facing load balancer will be created
 
 ![](loadbalancer-ip.png "width=500")
 
-Opening the IP address in our web browser display the web application we just deployed:
+Opening the IP address in our web browser display the web application we just deployed. Note the value that was assigned to the **SPRING_PROFILES_ACTIVE** environment variable is shown on the web page:
 
 ![](webapp.png "width=500")
 
 ## Promoting the deployment to the test environment
 
+Now that we have successfully deployed our application to the development environment and verified that it works correctly, we can promote it to the test environment. This is as simple as clicking the **DEPLOY** button on the Octopus dashboard:
 
+![](backend-test.png "width=500")
+
+Likewise we can promote the frontend application to the test environment, which will create a new load balancer with a new public IP:
+
+![](loadbalancer-ip-test.png "width=500")
+
+Opening the IP address in our web browser display the web application we just deployed, with the environment specific value assigned to the **SPRING_PROFILES_ACTIVE** environment variable displayed on the web page:
+
+![](webapp-test.png "width=500")
+
+That is how easy it is to promote a repeatable deployment to a new environment. Environment specific variables are applied as necessary, and we can be confident that the test environment is as close as possible to the applications we tested in the development environment.
 
 ## Conclusion
+
+Repeatable deployments are a fundament pillar of any deployment workflow. By promoting the same code and settings to new environments, we can gain ever greater confidence that our deployments will deliver a working solution to the end user.
+
+In this chapter we:
+* Defined the meaning of Continuous Integration, Continuous Delivery and Continuous Deployments.
+* Defined what a deployment includes.
+* Learned how to model environments in Kubernetes.
+* Learned how to create service accounts that provided access to a single namespace.
+* Configured Kubernetes accounts and targets in Octopus.
+* Deployed a sample application with a backend database and a frontend web application to Kubernetes.
+* Looked at environment specific variables.
+* Promoted the deployment to new environments.
