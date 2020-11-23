@@ -117,7 +117,7 @@ To demonstrate repeatable deployments, we'll deploy a sample application with a 
 
 The end result of our deployment is shown below:
 
-[](deployment.png "width=500")
+![](deployment.png "width=500")
 
 *The Kubernetes and Octopus resources making up the deployment.*
 
