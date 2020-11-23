@@ -315,9 +315,11 @@ The Privacy Enhanced Mail (PEM) format is a plain text representation of a certi
 For a deeper discussion on certificates and formats, see this [video](https://www.youtube.com/watch?v=I01yI-FprMU&list=PLAGskdGvlaw02xL8jUBCF0DirsRZVZrjw&index=13).
 :::
 
-We can now create a Kubernetes target. The target will be scoped to the **Admin**, **Development**, and **Test** environments, and will have the role of **admin** applied to it. It will use the **Username and Password** authentication option, and select the account created above. 
+We can now create a Kubernetes target. The target is called **Non-prod Admin**, and is scoped to the **Admin**, **Development**, and **Test** environments, and will have the role of **admin** applied to it. It will use the **Username and Password** authentication option, and select the account created above. 
 
-The **Kubernetes cluster URL** field is set to the **endpoint** IP address provided by the GKE console. We will secure the traffic sent to the endpoint by using HTTPS. The **Select certificate** option will select the certificate that we created above.
+The **Kubernetes cluster URL** field is set to the **endpoint** IP address provided by the GKE console. We will secure the traffic sent to the endpoint by using HTTPS. The **Select certificate** option will select the certificate that we created above:
+
+![](nonprod-admin.png "width=500")
 
 :::hint
 **Concept link: Cluster URL and endpoint**
@@ -329,11 +331,15 @@ Kubernetes uses the same network stack as your browser to communicate with it's 
 A URL and an endpoint are the same thing. You can paste an endpoint into your browser, although you will likely see a response that only makes sense to a programmer rather than a usable web page.
 :::
 
-This process will be done twice to create two Kubernetes targets called **Non-Prod Admin** and **Prod-Admin**.
+This process is repeated to create the **Prod-Admin** target, scoped to the **Admin** and **Production** environments:
+
+![](production-admin.png "width=500")
 
 ## Creating the cluster admin project
 
-Start by creating a new project in Octopus called **Cluster Admin**.
+Start by creating a new project in Octopus called **Cluster Admin**:
+
+![](create-project.png "width=500")
 
 A project holds a deployment process and runbooks, along with project level variables and other settings relating to deployments and operations tasks.
 
