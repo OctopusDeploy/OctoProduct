@@ -524,7 +524,7 @@ Configure an image called **frontend** to download the Docker image **octopussam
 
 Expose a port called **web** on port **80**:
 
-![](frontend-port.png "width=500")
+![](frontend-ports.png "width=500")
 
 Then configure the environment variable **POSTGRES_URL** to **jdbc:postgresql://database-service:5432/postgres** and the variable **SPRING_PROFILES_ACTIVE** to **#{Octopus.Environment.Name}**:
 
