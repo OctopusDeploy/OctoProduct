@@ -186,4 +186,56 @@ To allow dynamic infrastructure to be created in an environment, the **Allow man
 ![](dynamic-infrastructure.png "width=500")
 :::
 
+## Creating the Octopus targets
+
+This example uses Google Cloud GKE clusters. From these two clusters we need to import the following into Octopus:
+
+* The username and password
+* The Kubernetes cluster endpoint
+* The Kubernetes cluster Certificate Authority (CA) certificate
+
+:::hint
+**Concept explanation: Certificate Authority**
+
+A certificate authority is an organization or service that validates an identity. The identity and the validation of it is captured in a cryptographically secure way by signing a certificate. The certificate can be shared allowing the identity of parties involved in a transaction to be verified.
+
+The CA itself is identified by a certificate. Certificates identifying CA's are called root certificates.
+
+Certificates are used to secure web traffic, and they are required for HTTPS traffic through a web browser. Browsers supply their own collection of vetted root certificates, and so any certificate signed by one of these preinstalled root certificates is trusted by the browser.
+
+Kubernetes exposes a REST API that uses the same underlying network stack used by browsers. This API is often secured with HTTPS. However, the CA used to sign the certificate protecting the Kubernetes HTTPS API is not usually known to the client (i.e. your own desktop or the Octopus server).
+
+This means the cluster CA certificate must be explicitly downloaded and configured in order to be trusted by the tools interacting with the Kubernetes cluster.
+:::
+
+Here is a screenshot of the endpoint URL of a GKE cluster:
+
+![](gke-endpoint.png "width=500")
+
+Here is a screenshot of the credentials and cluster CA certificate of a GKE cluster:
+
+![](gke-credentials.png "width=500")
+
+The credentials are provided as a username and password. These are captured as a Username/Password account in Octopus:
+
+![](nonprod-admin-creds.png "width=500")
+
+The certificate, supplied in the PEM format, can be pasted into Octopus as a new certificate:
+
+![](nonprod-certificate.png "width=500")
+
+:::hint
+**Concept explanation: PEM format**
+
+The Privacy Enhanced Mail (PEM) format is a plain text representation of a certificate, public key, and/or certificate chain. PEM files are popular with open source applications, and convenient to work with because they can be copied and pasted in a browser or text editor.
+
+For a deeper discussion on certificates and formats, see this [video](https://www.youtube.com/watch?v=I01yI-FprMU&list=PLAGskdGvlaw02xL8jUBCF0DirsRZVZrjw&index=13).
+:::
+
+We can now create a Kubernetes target. The target will be scoped to the **Admin**, **Development**, and **Test** environments, and will have the role of **admin** applied to it. It will use the **Username and Password** authentication, and select the account created above. 
+
+The **Kubernetes cluster URL** field is set to the **endpoint** IP address provided by the GKE console. We will secure the traffic sent to the endpoint by using HTTPS. The **Select certificate** option will select the certificate that we created above.
+
+This process will be done twice to create two Kubernetes targets called **Non-Prod Admin** and **Prod-Admin**.
+
 ## Conclusion
