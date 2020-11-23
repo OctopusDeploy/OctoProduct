@@ -186,6 +186,16 @@ To allow dynamic infrastructure to be created in an environment, the **Allow man
 ![](dynamic-infrastructure.png "width=500")
 :::
 
+:::hint
+**Concept explanation: API**
+
+An Application Programming Interface (API) defines how applications interact with each other.
+
+A REpresentational State Transfer Application Programming Interface (REST API) adheres to the semantics of the Hypertext Transfer Protocol (HTTP), which is the protocol used by web browsers. HTTP is ubiquitous, and so APIs built on top of it are easy to expose and access.
+
+HTTP clearly identifies and differentiates interactions that result in information being retrieved, created, updated or deleted. REST APIs expose their underlying platform respecting these methods of interacting with information.
+:::
+
 ## Creating the Octopus targets
 
 This example uses Google Cloud GKE clusters. From these two clusters we need to import the following into Octopus:
@@ -235,6 +245,16 @@ For a deeper discussion on certificates and formats, see this [video](https://ww
 We can now create a Kubernetes target. The target will be scoped to the **Admin**, **Development**, and **Test** environments, and will have the role of **admin** applied to it. It will use the **Username and Password** authentication, and select the account created above. 
 
 The **Kubernetes cluster URL** field is set to the **endpoint** IP address provided by the GKE console. We will secure the traffic sent to the endpoint by using HTTPS. The **Select certificate** option will select the certificate that we created above.
+
+:::hint
+**Concept link: Cluster URL and endpoint**
+
+A Uniform Resource Locator (URL) is the address that you type into a browser to visit a website. It will look like `http://mywebsite.com` for an insecure website or `https://mywebsite.com` for a secure website.
+
+Kubernetes uses the same network stack as your browser to communicate with it's API. When a program is interacting with a URL (as opposed to a human interacting with the URL), the URLs are sometimes referred to as endpoints.
+
+A URL and an endpoint are the same thing. You can paste an endpoint into your browser, although you will likely see a response that only makes sense to a programmer rather than a usable web page.
+:::
 
 This process will be done twice to create two Kubernetes targets called **Non-Prod Admin** and **Prod-Admin**.
 
