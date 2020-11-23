@@ -1,26 +1,26 @@
 ## Repeatable deployments
 
-One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing the end user with a working solution. This confidence can be built though testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test end users, or any number of other processes that allow issues to be identified before they impact end users.
+One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing the end user with a working solution. This confidence can be built through testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test end users, or any number of other processes that allow issues to be identified before they impact the final consumers of your deployments.
 
 However you only gain this confidence if the thing you are deploying to production is as close as possible to thing you have been verifying in non-production.
 
 By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
 
-In this chapter we will learn how to model repeatable deployments in a Kubernetes cluster, and then orchestrate the deployments using Octopus.
+In this chapter we will learn how to model repeatable deployments in a Kubernetes cluster and then orchestrate the deployments using Octopus.
 
 ## Continuous Integration, Continuous Delivery and Continuous Deployment
 
-Before we dive into the details of how to achieve repeatable deployments, we'll look at how this pillar fits into a CI/CD pipeline.
+Before we dive into the details of how to implement repeatable deployments, we'll look at how this pillar fits into a CI/CD pipeline.
 
 The terms Continuous Integration and Continuous Delivery/Deployments, or CI/CD, are frequently used to describe the progression from source code to publicly accessible application.
 
-For the purpose of this book, we consider Continuous Integration (CI) to be the process of compiling, testing and packaging an application as source code is updated. Specifically, in the case of Kubernetes deployments, CI is the process of packaging code as a Docker image, typically by a CI server.
+For the purpose of this book, we consider Continuous Integration (CI) to be the process of compiling, testing, packaging, and publishing an application as source code is updated. Specifically, in the case of Kubernetes deployments, CI is the process of packaging code as a Docker image and pushing it to a Docker registry, typically by a CI server.
 
-Continuous Delivery and Continuous Deployments (both abbreviated to CD) have subtly different meanings. We treat both terms as an automated series of steps that deliver an application to its destination. The distinction is whether those automated steps deliver the application directly to the end consumer with no manual human intervention or decision making.
+Continuous Delivery and Continuous Deployment (both abbreviated to CD) have subtly different meanings. We treat both terms as an automated series of steps that deliver an application to its destination. The distinction is whether those automated steps deliver the application directly to the end consumer with no manual human intervention or decision making.
 
-Continuous deployments have no manual human intervention. You have achieved Continuous Deployments when a commit to your source code is compiled, tested and packaged by your CI server, and then deployed, tested and exposed to end users. The success or failure of each stage of this process is automatic, resulting in a commit-to-consumer workflow.
+Continuous deployments have no manual human intervention. You have achieved continuous deployments when a commit to your source code is compiled, tested and packaged by your CI server, and then deployed, tested and exposed to end users. The success or failure of each stage of this process is automatic, resulting in a commit-to-consumer workflow.
 
-Continuous delivery involves a human making the decision to progress a deployment to the final consumers. This progression is typically represented as a promotion though a series of environments. A canonical example of environmental progression is to deploy applications to the non-production development and test environments, and finally the production environment. 
+Continuous delivery involves a human making the decision to progress a deployment to the final consumers. This progression is typically represented as a promotion through a series of environments. A canonical example of environmental progression is to deploy applications to the non-production development and test environments, and finally the production environment. 
 
 A development environment may very well be configured with continuous deployments, where each commit that is successfully built by the CI server is automatically deployed with no human intervention. Once the developers are happy that their changes are suitable for a wider audience, a deployment can be promoted to the test environment.
 
@@ -28,7 +28,7 @@ The test environment is where quality assurance (QA) staff validate changes, pro
 
 The production environment is the final destination of a deployment, and is where applications are exposed to their final consumers. 
 
-If you read blogs and tweets on the subject of CI/CD, you may be left with the impression that continuous deployments are the holy grail, and with continuous delivery being something of a poor substitute. However, what we have learned from most of our customers is that continuous delivery *works for them*. 
+If you read blogs and tweets on the subject of CI/CD, you may be left with the impression that continuous deployments are the holy grail, and continuous delivery is something of a poor substitute. However, what we have learned from most of our customers is that continuous delivery *works for them*. 
 
 So while the majority of the pillars described in this book apply equally well to continuous delivery and continuous deployments, we'll approach them from a continuous delivery point of view.
 
@@ -38,13 +38,13 @@ Deployment strategies like microservices are challenging the canonical notion of
 
 ## What is a deployment?
 
-In the previous section we talked about deploying "applications" to environments, which is typically how we talk about deployments. But to appreciate how repeatable deployments are achieved, we first need to be more specific about what we actually deploy.
+In the previous section we talked about deploying "applications" to environments, which is typically how we describe deployments. But to appreciate how repeatable deployments are achieved, we first need to be more specific about what we actually deploy.
 
 In Octopus there are three things that are deployed to an environment:
 
 1. The compiled applications (a Docker image in the case of a Kubernetes deployment) that are configured for a specific environment. Octopus refers to these as packages.
 2. The variables, usually with a small subset specific to individual environments, that define how the applications are configured.
-3. Scripts and configuration files written inline (i.e. not saved as files in packages) to support or define the application in an environment.
+3. Scripts and configuration files written inline (i.e. not saved as files in packages) to support or configure the application in an environment.
 
 Octopus represents a deployment as a series of steps. These steps are configured with a combination of variables, package references and inline scripts and configuration files.
 
@@ -56,53 +56,59 @@ The core design of Octopus embraces the pillar of repeatable deployments. The in
 
 ## Modelling environments with Kubernetes
 
-Now that we understand the benefits of progressing a deployment though environments, we can look at how Octopus environments are represented in Kubernetes.
+Now that we understand the benefits of progressing a deployment through environments, we can look at how Octopus environments are represented in Kubernetes.
 
 There are two common methods to model environments in Kubernetes.
 
-The first method to model environments is to use namespaces to partition a single cluster into many logical environments. 
+The first method to model environments is through the use of namespaces to partition a single cluster into many logical environments. 
 
 A simple approach would be to create namespaces like `development`, `test`, and `production`, with releases being deployed inside each namespace. 
 
-While easy to implement, this option does limit the ability to use Role Based Access Controls (RBAC) rules as a way of preventing rouge deployments from overwriting or deleting resources they shouldn't within an environment. Because RBAC rules apply to all resources of a certain type within a namespace (for example by allowing a specific Kubernetes user to create, update or delete pods) it is possible that a mistyped pod name in a deployment will overwrite an unrelated pod in the same namespace.
+While easy to implement, this option does limit the ability to use Role Based Access Control (RBAC) rules as a way of preventing rouge deployments from overwriting or deleting resources they shouldn't within an environment. Because RBAC rules apply to all resources of a certain type within a namespace (for example by allowing a specific Kubernetes user to create, update or delete pods) it is possible that a mistyped pod name in a deployment will overwrite an unrelated pod in the same namespace.
 
-This limitation can be overcome by having separate namespaces for each combination of deployment and environment. For example, you may have six namespaces to contain the deployments for a frontend and backend application called `development-frontend`, `development-backend`, `test-frontend`, `test-backend`, `production-frontend`, `production-backend`. Six Kubernetes accounts could then be used to perform each deployment to each environment, with each account only having access to their intended namespace.
+This limitation can be overcome by having separate namespaces for each combination of deployment and environment. For example, you may have six namespaces to contain the deployments for a frontend and backend application called `development-frontend`, `development-backend`, `test-frontend`, `test-backend`, `production-frontend`, and `production-backend`. Six Kubernetes accounts could then be used to perform the deployments to each environment, with each account only having access to their intended namespace.
 
 However, even when using fine grained namespaces to separate deployments, there are cases where Kubernetes resources can not be isolated. A classic example of this are Custom Resource Definitions (CRDs). CRDs are scoped to a cluster, and so can not be restricted to individual namespaces. It is also usually impractical to implement network bandwidth limits per namespace.
 
 Kubernetes does not provide a hard tenancy model where multiple untrusted tenants, or environments in our case, can operate on a single cluster with guarantees that one tenant will not affect another. Namespaces go a long way to providing multi-tenancy within a single cluster, but do not provide a complete solution.
 
-To address these limitations, environments can be implemented via the second method of using multiple clusters. Individual clusters provide a high degree of separation between environments, isolating shared resources like network traffic, cluster wide resources like CRDs, and node CPU and memory.
+To address these limitations, environments can be implemented via the second method of using multiple clusters. Individual clusters provide a high degree of separation between environments, isolating resources like network traffic, cluster wide resources like CRDs, and node CPU and memory.
 
-More likely you will use a combination of the two approaches by having a single cluster for the development and test environments, and a separate cluster for production.
+Most likely you will use a combination of the two approaches by having a single cluster for the development and test environments, and a separate cluster for production.
 
 ## Kubernetes account types
 
-To interact with Kubernetes resources, we need to authenticate with an account. [Kubernetes distinguishes between users accounts, which represent a human, and service accounts, which represent a machine](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-versus-service-accounts). Octopus supports both types of accounts when connecting to a cluster, but using a service account is recommended.
+To interact with Kubernetes resources, we need to authenticate with an account. [Kubernetes distinguishes between user accounts, which represent a human, and service accounts, which represent a machine](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-versus-service-accounts). Octopus supports both types of accounts when connecting to a cluster, but using a service account is recommended.
+
+For our sample deployment we will create service accounts for Octopus to use when connecting to the Kubernetes cluster.
 
 ## Restricting Kubernetes access
 
-RBAC is implemented in Kubernetes through roles and role bindings. Specifically, Kubernetes has four resources to define RBAC rules:
+RBAC is implemented in Kubernetes through roles and role bindings. Specifically, [Kubernetes has four resources to define RBAC rules](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#api-overview):
 
 * Role: a namespace scoped resource that defines the allowed operations on resources in the role's namespace.
 * RoleBinding: a namespace scoped resource that maps a role in role binding's namespace to a user or service account.
 * ClusterRole: a cluster scoped resource that defines the allowed operations resources in all namespaces.
 * ClusterRoleBinding: a cluster scoped resource that maps a cluster role to a user or service account.
 
+:::hint
+**Concept link: Roles and role bindings**
+
 In general terms, roles grant access to Kubernetes resources, and role bindings link accounts to roles.
+:::
 
 The recommended strategy is to have service accounts with the minimum level of permissions required to deploy a single application to an environment. This provides a guarantee that a deployment to one environment, such as the development environment, can not accidentally overwrite resources in another environment, such as the test or production environments.
 
 ## Modelling Kubernetes environments in Octopus
 
-Taken together, the combination of a cluster, account and namespace represent a security boundary into which a deployment can be performed. In Octopus, this security boundary is represented as a Kubernetes target.
+Taken together, the combination of a cluster, account, and namespace represent a security boundary into which a deployment can be performed. In Octopus, this security boundary is represented as a Kubernetes target.
 
-The Kubernetes target is the link between the physical (i.e. separated clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and individual deployments that take place in those environments, which Octopus models as roles. 
+The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and individual deployments that take place in those environments, which Octopus models as roles. 
 
 :::hint
 **Concept explanation: Octopus role**
 
-You can think of as a tag describing the the type of application being deployed (e.g. `frontend` or `backend`) or management task that is performed (e.g. `admin` or `query`).
+You can think of a role as as a tag describing the the type of application being deployed (e.g. `frontend` or `backend`) or management task that is performed (e.g. `admin` or `query`).
 :::
 
 ## The example deployment
