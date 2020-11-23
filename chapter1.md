@@ -1,6 +1,16 @@
 ## Repeatable deployments
 
+One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing the end user with a working solution. This confidence can be built though testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test end users, or any number of other processes that allow issues to be identified before they impact end users.
+
+However you only gain this confidence if the thing you are deploying to production is as close as possible to thing you have been verifying in non-production.
+
+By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
+
+In this chapter we will learn how to model repeatable deployments in a Kubernetes cluster, and then orchestrate the deployments using Octopus.
+
 ## Continuous Integration, Continuous Delivery and Continuous Deployment
+
+Before we dive into the details of how to achieve repeatable deployments, we'll look at how this pillar fits into a CI/CD pipeline.
 
 The terms Continuous Integration and Continuous Delivery/Deployments, or CI/CD, are frequently used to describe the progression from source code to publicly accessible application.
 
@@ -43,14 +53,6 @@ Octopus then creates a release. The release is a snapshot of the steps, their co
 The release is then deployed to an environment. In this way a consistent bundle of packages, variables, scripts and configuration files are promoted from one environment to the next. Only a small subset of environment specific settings vary from one environment to the next.
 
 The core design of Octopus embraces the pillar of repeatable deployments. The information contained in a release is deployed to each environment, ensuring that each environment is as close as possible to the others.
-
-## Benefits of repeatable deployments
-
-One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing the end user with a working solution. This confidence can be built though testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test end users, or any number of other processes that allow issues to be identified before they impact end users.
-
-However you only gain this confidence if the thing you are deploying to production is as close as possible to thing you have been verifying in non-production.
-
-By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
 
 ## Modelling environments with Kubernetes
 
