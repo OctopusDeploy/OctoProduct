@@ -125,7 +125,7 @@ The end result of our deployment is shown below:
 
 Our deployments will be hosted by two Kubernetes clusters. The first hosts the development and test environments, while the second hosts the production environment.
 
-Each cluster will have an initial user administrative user account to give them complete administrative rights to the cluster.
+Each cluster will have an initial user administrative user account granting complete administrative rights to the cluster.
 
 :::hint
 How the initial admin user is created is unique to each cluster, and often dependant on the options used when creating the cluster. Hosted Kubernetes providers like [AWS EKS](https://aws.amazon.com/eks/), [Azure AKS](https://azure.microsoft.com/en-au/services/kubernetes-service/) and [Google Cloud GKE](https://cloud.google.com/kubernetes-engine) all create these initial admin users in different ways.
@@ -133,16 +133,16 @@ How the initial admin user is created is unique to each cluster, and often depen
 This book uses GKE with basic authentication to create the initial admin user.
 :::
 
-Each combination of environment and Octopus role and is represented as a namespace.
+Each combination of environment and Octopus role is represented as a namespace.
 
-Inside each namespace is a service account, a Kubernetes role and a role binding. The Kubernetes role grants full access to all resources in the namespace, but do not grant access to any resources outside of the namespace.
+Inside each namespace is a service account, a Kubernetes role and a role binding. The Kubernetes role grants full access to all resources in the namespace, but does not grant access to any resources outside of the namespace.
 
 :::hint
 **Concept differentiation: Octopus and Kubernetes role**
 
-A role in Octopus is a way of describing the type of application (e.g. `frontend` or `backend`) that a step and target deploy, or a management operator (e.g. `admin` or `query`) that a step or target will execute.
+A role in Octopus is a way of describing the type of application (e.g. `frontend` or `backend`) that a step and target deploy, or a management operation (e.g. `admin` or `query`) that a step or target will execute.
 
-A role in Kubernetes is a resource that defines that allowed operations on other Kubernetes resources. A Kubernetes role is used as part of the RBAC security system.
+A role in Kubernetes is a resource that defines the allowed operations on other Kubernetes resources. A Kubernetes role is used as part of the RBAC security system.
 
 Kubernetes roles and Octopus roles are separate concepts and do not have any overlapping responsibilities.
 :::
@@ -167,7 +167,7 @@ The three environments development, test and production are represented as Octop
 :::hint
 **Concept differentiation: Octopus and Kubernetes environments**
 
-Octopus has a first class entity called an environment. It represents the physical and logic infrastructure to which deployments are performed. Octopus environments are also used as a security boundary, to scope other entities, and to enforce the order in which deployments take place.
+Octopus has a first class entity called an environment. It represents the physical and logical infrastructure to which deployments are performed. Octopus environments are also used as a security boundary, to scope other entities, and to enforce the order in which deployments take place.
 
 Kubernetes has no native concept of an environment. We emulate an environment through the combination of namespaces and clusters. For example, any namespace that starts with `development` is considered to be part of the development environment.
 :::
