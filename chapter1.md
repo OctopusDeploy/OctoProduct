@@ -351,6 +351,124 @@ Execute the runbooks against the development, test and production environments. 
 Spaces are hard boundaries that are used to partition a single Octopus instance allowing multiple teams or projects to work independently. Most Octopus entities are scoped to a single space and can not be shared across spaces.
 :::
 
+## Creating the feed
 
+The Docker images we'll be deploying to Kubernetes have been build and published to Docker Hub, which is a Docker Image registry.
+
+:::hint
+**Concept explanation: Docker image**
+
+A Docker image is a specially formatted collection of files that represents an operating system file system, along with any associated applications, such as any application you create and copy into the Docker image when it is built.
+:::
+
+:::hint
+**Concept explanation: Docker registry and repository**
+
+A Docker registry is a service that hosts one or more Docker repositories. For example, [Docker Hub](https://hub.docker.com) is a large Docker registry hosting thousands of Docker repositories for open source projects. Most cloud providers offer a Docker registry service, and you can host one yourself with tools like [Harbor](https://goharbor.io/), [Artifactory](https://jfrog.com/artifactory/), or [Quay.io](https://quay.io/).
+
+A Docker repository hold multiple tagged copies of a Docker image. For example, the Docker repository 
+at https://hub.docker.com/r/octopussamples/randomquotesjava holds the various tagged octopussamples/randomquotesjava images.
+:::
+
+To access the Docker images hosted by a Docker registry, we create a feed.
+
+:::hint
+**Concept explanation: Feeds**
+
+A feed in Octopus represents a collection of versioned packages that can be selected, and optionally downloaded, when creating a release.
+:::
+
+The feed is of type **Docker Container Registry**, and the URL to access the Docker Hub Registry is https://index.docker.io.
+
+No credentials are required, as we will be selecting images from public Docker repositories.
+
+![](docker-feed.png "width=500")
+
+:::hint
+**Concept differentiation: Docker registry and the built-in feed**
+
+Octopus provides a built-in feed which holds artifacts like ZIP, TAR.GZ, NUPKG, JAR, and WAR files.
+
+The built-in feed does not function as a Docker registry and does not host Docker images. To deploy Docker images with Octopus, an external Docker registry is required.
+:::
+
+## Creating the project
+
+We are now in a position to create the deployment projects for our frontend web application and our backend database application.
+
+We'll start with the backend database. Create a project called **RandomQuotes Backend**. In the **Process** section, add the step **Deploy Kubernetes containers**. Configure the step to execute on behalf of the **database** role.
+
+Select **Deployment** from the **Resource Type** section. This configures the step to deploy a Kubernetes deployment resource.
+
+:::hint
+**Concept differentiation: Octopus and Kubernetes deployments**
+
+In Kubernetes, a deployment is a specific type of resource used to create and manage pods. A Kubernetes deployment will create pods, monitor their health, restart unhealthy pods, and scale pods up and down.
+
+In Octopus, a deployment is the result of executing a release in an environment. An Octopus deployment captures the success or failure of the steps, the log files, and any artifacts.
+
+A Kubernetes deployment can be created during an Octopus deployment, but otherwise the two concepts have nothing in common.
+:::
+
+:::hint
+**Concept explanation: Pods**
+
+A Kubernetes pod is a collection of containers in a shared network space, and with shared storage.
+:::
+
+:::hint
+**Concept explanation: Containers**
+
+A container is based on a Docker image, and can be configured with numerous settings to customize the context win which the applications stored on the Docker image are run.
+:::
+
+:::hint
+**Concept differentiation: Docker images and containers**
+
+A Docker image is a static collection of files used as the base file system for a container.
+
+A container is an isolated executable context in which the applications from its base Docker image are run.
+:::
+
+In the **Containers** section, click the **ADD CONTAINER** button.
+
+The container we will be configuring here will provide a Postgres database, distributed with the [postgres](https://hub.docker.com/_/postgres) Docker image.
+
+Enter **postgres** for the image **Name**, select the **Docker Hub** feed we created earlier, and select the **postgres** Package ID:
+
+![](container-image.png "width=500")
+
+To access the database we need to expose a network port. Postgres uses port 5432. Under the **Ports** section, click the **ADD PORT** button, enter **database** as the **Name**, and **5432** as the **Port**:
+
+![](container-port.png "width=500")
+
+We configure the container with two environment variables. These are defined under the **Environment variables** section. Click the **ADD ENVIRONMENT VARIABLE** button to add the first environment variable. Set the **Name** to **POSTGRES_PASSWORD** and the **Value** to **#{Database Password}**. The value **#{Database Password}** references a variable that we will create in the next section.
+
+Add a second environment variable with a **Name** of **POSTGRES_USER** and a **Value** of **postgres**:
+
+![](container-environment-variables.png "width=500")
+
+Click the **OK** button to save the container.
+
+We now need to expose the pods created the by the deployment via a service.
+
+:::hint
+**Concept explanation: Service**
+
+A Kubernetes service exposes one or more pods via the network to other pods within the cluster, or to external clients.
+
+Without a service, containers in a pod are not externally accessible.
+:::
+
+Under the **Service** section, enter **database-service** for the **Service name** field.
+
+Under the **Service Ports** section, click the **ADD PORT** button. Enter **database** as the **Name** and **5432** as the **Port**:
+
+![](service-ports.png "width=500")
+
+Click the **OK** button to save the port details.
+
+
+## Deploying the frontend application
 
 ## Conclusion
