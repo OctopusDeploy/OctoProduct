@@ -8,7 +8,11 @@ By embracing repeatable deployments, you can be sure that what your end users us
 
 In this chapter we will learn how to model repeatable deployments in a Kubernetes cluster and then orchestrate the deployments using Octopus.
 
-## Continuous Integration, Continuous Delivery and Continuous Deployment
+## General deployment concepts
+
+To understand repeatable deployments, we need to understand what a deployment is, and at what point in a typical build and deployment pipeline the deployments take place.
+
+### Continuous Integration, Continuous Delivery and Continuous Deployment
 
 Before we dive into the details of how to implement repeatable deployments, we'll look at how this pillar fits into a CI/CD pipeline.
 
@@ -36,9 +40,29 @@ So while the majority of the pillars described in this book apply equally well t
 Deployment strategies like microservices are challenging the canonical notion of non-production and production environments. We'll explore this with the Seamless pillar in chapter 7.
 :::hint
 
-## What is a deployment?
+### What is an environment?
 
-In the previous section we talked about deploying "applications" to environments, which is typically how we describe deployments. But to appreciate how repeatable deployments are achieved, we first need to be more specific about what we actually deploy.
+Environments describe the boundaries between copies of individual applications or entire application stacks and their supporting infrastructure. 
+
+The configuration of all environments should be as similar as possible to ensure that an application will behave consistently regardless of which environment it exists in.
+
+Environments typically represent a progression from an initial environment with a high frequency of deployments and low stability through to the final environment with a low frequency of deployments and high stability.
+
+Deployments are progressed through environments to gain an increasing level of confidence that a working solution can be delivered to the final consumer.
+
+The canonical example of a set of environments are called development, test, and production.
+
+| Environment | Description | Deployment Frequency | Stability / Confidence |
+|-|-|-|-|
+| Development | Used by developers to test individual changes as they are implemented. | High | Low |
+| Test | Use by developers and other non-technical staff to validate changes meet requirements. | Medium | Medium |
+| Production | Used by customers to consume the publicly available instance of the applications. | Low | High |
+
+Although you are free to have any number of environments with any names, this book will use this set of environments in the examples.
+
+### What is a deployment?
+
+We have talked about deploying "applications" to environments, which is typically how we describe deployments. But to appreciate how repeatable deployments are achieved, we first need to be specific about what we actually deploy.
 
 In Octopus there are three things that are deployed to an environment:
 
@@ -54,9 +78,11 @@ The release is then deployed to an environment. In this way a consistent bundle 
 
 The core design of Octopus embraces the pillar of repeatable deployments. The information contained in a release is deployed to each environment, ensuring that each environment is as close as possible to the others.
 
-## Modelling environments with Kubernetes
+## Modelling deployments in Octopus and Kubernetes
 
-Now that we understand the benefits of progressing a deployment through environments, we can look at how Octopus environments are represented in Kubernetes.
+Now that we understand the basic concepts that make up a deployment, we can map those concepts to specific implementations in Kubernetes and Octopus.
+
+### Modelling environments with Kubernetes
 
 There are two common methods to model environments in Kubernetes.
 
@@ -76,13 +102,17 @@ To address these limitations, environments can be implemented via the second met
 
 Most likely you will use a combination of the two approaches by having a single cluster for the development and test environments, and a separate cluster for production.
 
-## Kubernetes account types
+### Securing deployments in Kubernetes
 
-To interact with Kubernetes resources, we need to authenticate with an account. [Kubernetes distinguishes between user accounts, which represent a human, and service accounts, which represent a machine](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-versus-service-accounts). Octopus supports both types of accounts when connecting to a cluster, but using a service account is recommended.
+When using namespaces to represent environments in Kubernetes, it is important to isolate them as much as possible from one another. If a deployment to the test environment modified resources in the development environment, or even worse the production environment, at best it would be difficult to reason about the state of the environments, and at worst the multiple environments would be left in a corrupted state.
+
+#### Kubernetes account types
+
+To interact with Kubernetes resources, we need to authenticate with an account. [Kubernetes distinguishes between user accounts, which represent a human, and service accounts, which represent a machine](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#user-accounts-versus-service-accounts). Octopus supports both service and user accounts when connecting to a cluster, but using a service account is recommended.
 
 For our sample deployment we will create service accounts for Octopus to use when connecting to the Kubernetes cluster.
 
-## Restricting Kubernetes access
+#### Restricting access to Kubernetes resources
 
 RBAC is implemented in Kubernetes through roles and role bindings. Specifically, [Kubernetes has four resources to define RBAC rules](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#api-overview):
 
@@ -99,11 +129,21 @@ In general terms, roles grant access to Kubernetes resources, and role bindings 
 
 The recommended strategy is to have service accounts with the minimum level of permissions required to deploy a single application to an environment. This provides a guarantee that a deployment to one environment, such as the development environment, can not accidentally overwrite resources in another environment, such as the test or production environments.
 
-## Modelling Kubernetes environments in Octopus
+### Modelling environments in Octopus
+
+Unlike Kubernetes, environments are a first class entity in Octopus. 
+
+Octopus environments are used as a security boundary, allowing for specific users to perform actions only in specific environments.
+
+Targets, described in the next section, are scoped to specific environments, providing a link between the Octopus representation of an environment and the environment modelled in the external infrastructure.
+
+How deployments progress from one environment to the next is configured in a lifecycle. A lifecycle defines the order of environments that a deployment must be performed to, while allowing deployments to some environments to be optional.
+
+### Modelling Kubernetes environments in Octopus
 
 Taken together, the combination of a cluster, account, and namespace represent a security boundary into which a deployment can be performed. In Octopus, this security boundary is represented as a Kubernetes target.
 
-The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and individual deployments that take place in those environments, which Octopus models as roles. 
+The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and categorization of the deployment that take place in those environments, which Octopus models as roles. 
 
 :::hint
 **Concept explanation: Octopus role**
@@ -111,7 +151,7 @@ The Kubernetes target is the link between the physical (i.e. separate clusters) 
 You can think of a role as as a tag describing the the type of application being deployed (e.g. `frontend` or `backend`) or management task that is performed (e.g. `admin` or `query`).
 :::
 
-## The example deployment
+## Repeatable deployments in practice
 
 To demonstrate repeatable deployments, we'll deploy a sample application with a frontend and backend component to the development, test, and production environments. We'll create the development and test environments in one Kubernetes cluster, and the production environment in a second Kubernetes cluster.
 
@@ -121,7 +161,7 @@ The end result of our deployment is shown below:
 
 *The Kubernetes and Octopus resources making up the deployment.*
 
-### The Kubernetes cluster
+### An overview of the Kubernetes infrastructure
 
 Our deployments will be hosted by two Kubernetes clusters. The first hosts the development and test environments, while the second hosts the production environment.
 
@@ -147,7 +187,7 @@ A role in Kubernetes is a resource that defines the allowed operations on other 
 Kubernetes roles and Octopus roles are separate concepts and do not have any overlapping responsibilities.
 :::
 
-### The Octopus configuration
+### Creating the Octopus accounts and targets
 
 The two initial administrative user accounts in the Kubernetes clusters will be represented in Octopus as Username/Password accounts.
 
@@ -156,10 +196,11 @@ The two initial administrative user accounts in the Kubernetes clusters will be 
 
 Credentials can be represented as either an account or a certificate in Octopus.
 
-|Kubernetes User|Octopus entity|
-|-|-|
-|User|Either a Username/Password account, or a certificate.|
-|Service Account|A token account containing the token held in the secret that is [automatically created with each new service account](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#token-controller).|
+A Kubernetes user account with a username and password is represented by an Octopus Username/Password account.
+
+A Kubernetes user account with a certificate is represent by an Octopus certificate.
+
+A Kubernetes service account with a token stored in a secret is represented as an Octopus Token account. 
 :::
 
 The three environments development, test and production are represented as Octopus environments. In addition, we'll create a fourth environment called admin to represent management tasks performed at the cluster level.
