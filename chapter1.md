@@ -50,7 +50,7 @@ Environments typically represent a progression from an initial environment with 
 
 Deployments are progressed through environments to gain an increasing level of confidence that a working solution can be delivered to the final consumer.
 
-The canonical example of a set of environments are called development, test, and production.
+The canonical set of environments are called development, test, and production:
 
 | Environment | Description | Deployment Frequency | Stability / Confidence |
 |-|-|-|-|
@@ -80,7 +80,7 @@ The core design of Octopus embraces the pillar of repeatable deployments. The in
 
 ## Modelling deployments in Octopus and Kubernetes
 
-Now that we understand the basic concepts that make up a deployment, we can map those concepts to specific implementations in Kubernetes and Octopus.
+Now that we understand the basic concepts that comprise a deployment, we can map those concepts to specific implementations in Kubernetes and Octopus.
 
 ### Modelling environments with Kubernetes
 
@@ -104,7 +104,9 @@ Most likely you will use a combination of the two approaches by having a single 
 
 ### Securing deployments in Kubernetes
 
-When using namespaces to represent environments in Kubernetes, it is important to isolate them as much as possible from one another. If a deployment to the test environment modified resources in the development environment, or even worse the production environment, at best it would be difficult to reason about the state of the environments, and at worst the multiple environments would be left in a corrupted state.
+When using namespaces to represent environments in Kubernetes, it is important to isolate them as much as possible from one another. If a deployment to the test environment modified resources in the development environment, or even worse the production environment, at best it would be difficult to reason about the state of the environments, and at worst multiple environments would be left in a corrupted state.
+
+Interactions with namespaces can be restricted through accounts, roles and role bindings.
 
 #### Kubernetes account types
 
@@ -112,7 +114,7 @@ To interact with Kubernetes resources, we need to authenticate with an account. 
 
 For our sample deployment we will create service accounts for Octopus to use when connecting to the Kubernetes cluster.
 
-#### Restricting access to Kubernetes resources
+#### Kubernetes roles and role bindings
 
 RBAC is implemented in Kubernetes through roles and role bindings. Specifically, [Kubernetes has four resources to define RBAC rules](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#api-overview):
 
@@ -137,13 +139,13 @@ Octopus environments are used as a security boundary, allowing for specific user
 
 Targets, described in the next section, are scoped to specific environments, providing a link between the Octopus representation of an environment and the environment modelled in the external infrastructure.
 
-How deployments progress from one environment to the next is configured in a lifecycle. A lifecycle defines the order of environments that a deployment must be performed to, while allowing deployments to some environments to be optional.
+How deployments progress from one environment to the next is configured in a lifecycle. A lifecycle defines the order of environments that a deployment must be performed to. Lifecycles also allow deployments to some environments to be optional.
 
 ### Modelling Kubernetes environments in Octopus
 
 Taken together, the combination of a cluster, account, and namespace represent a security boundary into which a deployment can be performed. In Octopus, this security boundary is represented as a Kubernetes target.
 
-The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, and categorization of the deployment that take place in those environments, which Octopus models as roles. 
+The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, the credentials required to interact with the Kubernetes cluster, and teh categorization of the deployment that take place in those environments, which Octopus models as roles. 
 
 :::hint
 **Concept explanation: Octopus role**
@@ -155,7 +157,7 @@ You can think of a role as as a tag describing the the type of application being
 
 To demonstrate repeatable deployments, we'll deploy a sample application with a frontend and backend component to the development, test, and production environments. We'll create the development and test environments in one Kubernetes cluster, and the production environment in a second Kubernetes cluster.
 
-The end result of our deployment is shown below:
+The infrastructure we'll create to host these deployments is shown below:
 
 ![](deployment.png "width=500")
 
@@ -165,7 +167,7 @@ The end result of our deployment is shown below:
 
 Our deployments will be hosted by two Kubernetes clusters. The first hosts the development and test environments, while the second hosts the production environment.
 
-Each cluster will have an initial user administrative user account granting complete administrative rights to the cluster.
+Each cluster will have an initial administrative user account granting complete access to the cluster.
 
 :::hint
 How the initial admin user is created is unique to each cluster, and often dependant on the options used when creating the cluster. Hosted Kubernetes providers like [AWS EKS](https://aws.amazon.com/eks/), [Azure AKS](https://azure.microsoft.com/en-au/services/kubernetes-service/) and [Google Cloud GKE](https://cloud.google.com/kubernetes-engine) all create these initial admin users in different ways.
@@ -182,10 +184,32 @@ Inside each namespace is a service account, a Kubernetes role and a role binding
 
 A role in Octopus is a way of describing the type of application (e.g. `frontend` or `backend`) that a step and target deploy, or a management operation (e.g. `admin` or `query`) that a step or target will execute.
 
-A role in Kubernetes is a resource that defines the allowed operations on other Kubernetes resources. A Kubernetes role is used as part of the RBAC security system.
+A role in Kubernetes is a resource that defines the allowed operations on other Kubernetes resources. A Kubernetes role is part of the RBAC security system.
 
 Kubernetes roles and Octopus roles are separate concepts and do not have any overlapping responsibilities.
 :::
+
+### Creating the Octopus environments
+
+The three environments hosting our application called **Development**, **Test**, and **Production** are created and configured to allow dynamic infrastructure.
+
+We create a fourth environment called **Admin** that will represent task run at the cluster level.
+
+![](environments.png "width=500")
+
+### Creating the Octopus Lifecycle
+
+The default lifecycle configures a progression between each environment in the order they were created in.
+
+However, the **Admin** environment exists to run cluster level management tasks, and will not have deployments executed against it.
+
+To ensure that deployments do not include the **Admin** environment, we must create a custom lifecycle including only the **Development**, **Test**, and **Production** environments.
+
+Lifecycles break down the progression of a deployment into phases. Each phase represents the next environment or environments that a deployment can be executed against. Complex deployments may place multiple environments in a single phase, but our lifecycle will place a single environment in each phase.
+
+This means our lifecycle has three phases called **Development**, **Test**, and **Production**, with each phase containing the single environment of the same name:
+
+![](lifecycle.png "width=500")
 
 ### Creating the Octopus accounts and targets
 
@@ -194,11 +218,11 @@ The two initial administrative user accounts in the Kubernetes clusters will be 
 :::hint
 **Concept link: Octopus accounts, certificates, and Kubernetes users**
 
-Credentials can be represented as either an account or a certificate in Octopus.
+Kubernetes credentials can be represented as either an account or a certificate in Octopus.
 
 A Kubernetes user account with a username and password is represented by an Octopus Username/Password account.
 
-A Kubernetes user account with a certificate is represent by an Octopus certificate.
+A Kubernetes user account with a certificate is represented by an Octopus certificate.
 
 A Kubernetes service account with a token stored in a secret is represented as an Octopus Token account. 
 :::
@@ -208,7 +232,7 @@ The three environments development, test and production are represented as Octop
 :::hint
 **Concept differentiation: Octopus and Kubernetes environments**
 
-Octopus has a first class entity called an environment. It represents the physical and logical infrastructure to which deployments are performed. Octopus environments are also used as a security boundary, to scope other entities, and to enforce the order in which deployments take place.
+Octopus has a first class entity called an environment. It represents the physical and logical infrastructure to which deployments are performed, a security boundary, and (when placed in a lifecycle) the order in which deployments must be performed. 
 
 Kubernetes has no native concept of an environment. We emulate an environment through the combination of namespaces and clusters. For example, any namespace that starts with `development` is considered to be part of the development environment.
 :::
@@ -249,9 +273,9 @@ HTTP clearly identifies and differentiates interactions that result in informati
 
 This example uses Google Cloud GKE clusters. From these two clusters we need to import the following into Octopus:
 
-* The username and password
-* The Kubernetes cluster endpoint
-* The Kubernetes cluster Certificate Authority (CA) certificate
+* The username and password.
+* The Kubernetes cluster endpoint.
+* The Kubernetes cluster Certificate Authority (CA) certificate.
 
 :::hint
 **Concept explanation: Certificate Authority**
@@ -260,11 +284,11 @@ A certificate authority is an organization or service that validates an identity
 
 The CA itself is identified by a certificate. Certificates identifying CA's are called root certificates.
 
-Certificates are used to secure web traffic, and they are required for HTTPS traffic through a web browser. Browsers supply their own collection of vetted root certificates, and so any certificate signed by one of these preinstalled root certificates is trusted by the browser.
+Certificates are used to secure web traffic, and they are required for HTTPS traffic through a web browser. Browsers supply their own collection of vetted root certificates, and any certificate signed by one of these preinstalled root certificates is trusted by the browser.
 
 Kubernetes exposes a REST API that uses the same underlying network stack used by browsers. This API is often secured with HTTPS. However, the CA used to sign the certificate protecting the Kubernetes HTTPS API is not usually known to the client (i.e. your own desktop or the Octopus server).
 
-This means the cluster CA certificate must be explicitly downloaded and configured in order to be trusted by the tools interacting with the Kubernetes cluster.
+This means the cluster CA certificate must be explicitly downloaded and configured in order to be trusted by tools interacting with the Kubernetes cluster.
 :::
 
 Here is a screenshot of the endpoint URL of a GKE cluster:
@@ -291,7 +315,7 @@ The Privacy Enhanced Mail (PEM) format is a plain text representation of a certi
 For a deeper discussion on certificates and formats, see this [video](https://www.youtube.com/watch?v=I01yI-FprMU&list=PLAGskdGvlaw02xL8jUBCF0DirsRZVZrjw&index=13).
 :::
 
-We can now create a Kubernetes target. The target will be scoped to the **Admin**, **Development**, and **Test** environments, and will have the role of **admin** applied to it. It will use the **Username and Password** authentication, and select the account created above. 
+We can now create a Kubernetes target. The target will be scoped to the **Admin**, **Development**, and **Test** environments, and will have the role of **admin** applied to it. It will use the **Username and Password** authentication option, and select the account created above. 
 
 The **Kubernetes cluster URL** field is set to the **endpoint** IP address provided by the GKE console. We will secure the traffic sent to the endpoint by using HTTPS. The **Select certificate** option will select the certificate that we created above.
 
