@@ -193,6 +193,16 @@ Kubernetes roles and Octopus roles are separate concepts and do not have any ove
 
 The three environments hosting our application called **Development**, **Test**, and **Production** are created and configured to allow dynamic infrastructure.
 
+:::hint
+**Concept explanation: Dynamic infrastructure**
+
+Targets and other entities like accounts and certificates can be created in Octopus via the web UI, the REST API, or as part of a script run by Octopus. Entities created as part of a script run by Octopus are said to be [dynamic infrastructure](https://octopus.com/docs/infrastructure/deployment-targets/dynamic-infrastructure).
+
+To allow dynamic infrastructure to be created in an environment, the **Allow managing dynamic infrastructure** option must be enabled on that environment:
+
+![](dynamic-infrastructure.png "width=500")
+:::
+
 We create a fourth environment called **Admin** that will represent task run at the cluster level.
 
 ![](environments.png "width=500")
@@ -248,16 +258,6 @@ Runbooks are also a series of steps executed sequentially, but can be run agains
 :::
 
 We will use these two administrative targets to dynamically create six additional targets representing the six namespaces in Kubernetes.
-
-:::hint
-**Concept explanation: Dynamic infrastructure**
-
-Targets and other entities like accounts and certificates can be created in Octopus via the web UI, the REST API, or as part of a script run by Octopus. Entities created as part of a script run by Octopus are said to be [dynamic infrastructure](https://octopus.com/docs/infrastructure/deployment-targets/dynamic-infrastructure).
-
-To allow dynamic infrastructure to be created in an environment, the **Allow managing dynamic infrastructure** option must be enabled on that environment:
-
-![](dynamic-infrastructure.png "width=500")
-:::
 
 :::hint
 **Concept explanation: API and REST API**
