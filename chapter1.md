@@ -392,7 +392,7 @@ Octopus provides a built-in feed which holds artifacts like ZIP, TAR.GZ, NUPKG, 
 The built-in feed does not function as a Docker registry and does not host Docker images. To deploy Docker images with Octopus, an external Docker registry is required.
 :::
 
-## Creating the project
+## Deploying the backend database
 
 We are now in a position to create the deployment projects for our frontend web application and our backend database application.
 
@@ -466,9 +466,118 @@ Under the **Service Ports** section, click the **ADD PORT** button. Enter **data
 
 ![](service-ports.png "width=500")
 
-Click the **OK** button to save the port details.
+Click the **OK** button to save the port details. Then click **SAVE** to save the step.
 
+## Defining the variables
+
+The final thing to configure is the database password we referenced as the value of the **POSTGRES_PASSWORD** environment variable. Open the **Variables** section of the project, enter **Database Password** for the **Name**, click in the **Value** field, click the **CHANGE TYPE** button, and select the **Sensitive** option. Then enter **docker** for the **Value**.
+
+Note how the variable value is hidden behind dots. You will not be able to view this password from the **Variables** section again once the password is saved. Click the **SAVE** button to save the new variable:
+
+![](variables.png "width=500")
+
+## Deploying the database
+
+We now have everything in place to perform repeatable deployments of the backend database to Kubernetes. To begin the process, click the **CREATE RELEASE** button.
+
+You will be presented with a screen showing the release version, and the versions of any packages referenced by the deployment process. 
+
+In this example, our deployment process referenced the postgres Docker image from the Docker Hub feed. By default the latest package version is selected. The postgres image has a tag of `latest`, which is considered to be the latest version:
+
+![](create-release.png "width=500")
+
+:::hint
+**Concept link: Docker image tags and package versions**
+
+Tags are applied to Docker images to allow a single image to have multiple distinguishable copies. Docker has no inherent concept of versions, but tags are often used to version images.
+
+The `latest` tag is the only one with special meaning. It is used to identify the latest copy of the image. Technically, the `latest` tag does not have to be assigned to the most recently built or uploaded Docker image. It is simply a convention, and not an enforced requirement.
+
+Octopus requires that packages have comparable versions in order to determine the latest package version. Octopus treats tags as versions, and will treat the `latest` tag as the most recent version.
+
+So from the point of view of Octopus, package versions and Docker tags are the same thing.
+:::
+
+The fact that we select the package versions when a release is created is significant. It means that the deployment process can remain unchanged as new packages are releases. This is an example of how Octopus builds repeatable deployments into the core of the product.
+
+Click the **SAVE** button to create the release.
+
+We now have a versioned release that captures the steps in the deployment process and the value of the variables at the time the release was created. It is this versioned release that we will be deploying to our environments:
+
+![](release.png "width=500")
+
+Click the **DEPLOY TO DEVELOPMENT...** button to being the process of deploying the release to the development environment. You will be presented with advanced options to change how the release is deployed, but we will accept the default values. 
+
+Click the **DEPLOY** button to deploy the database to the Kubernetes cluster in the development environment. After a few moments, the deployment will complete successfully, and our Postgres database will be running in the development environment:
+
+![](deployment-logs.png "width=500")
 
 ## Deploying the frontend application
+
+Create a new project called **RandomQuotes Frontend**. As we did before, add a **Deploy Kubernetes container** step. 
+
+This time have it deploy on behalf of targets with the **frontend** role.
+
+Configure an image called **frontend** to download the Docker image **octopussamples/randomquotesjava**:
+
+![](frontend-image.png "width=500")
+
+Expose a port called **web** on port **80**:
+
+![](frontend-port.png "width=500")
+
+Then configure the environment variable **POSTGRES_URL** to **jdbc:postgresql://database-service:5432/postgres** and the variable **SPRING_PROFILES_ACTIVE** to **#{Octopus.Environment.Name}**:
+
+![](frontend-envvars.png "width=500")
+
+:::hint
+**Concept link: Kubernetes services and internal network addresses**
+
+You will note that the frontend container is accessing a database on the hostname **database-service** and port **5432**.
+
+The hostname is the same name as the service we exposed the database pods with, and the port is the same number we configured in the service.
+
+Kubernetes services expose the pods behind them with the same hostname as the name of the service.
+:::
+
+The **SPRING_PROFILES_ACTIVE** environment variable configures the name of the Spring profile used by our sample Spring application called "Random Quotes". The name of the active profile is displayed by the web application, which means we will be able to observe the value of this environment variable as we progress the deployment through the environments.
+
+Note that we have set the value of the **SPRING_PROFILES_ACTIVE** environment variable to **#{Octopus.Environment.Name}**. The `Octopus.Environment.Name` variable is exposed by Octopus as the name of the environment that is being deployed to. We use this variable here as an example of an environment specific variable that customizes our deployment between environments.
+
+Repeatable deployments means keeping your deployments as similar as possible between environments, but there will always be some environment specific configuration required in any real world application deployment. Environment specific variables is one way Octopus can accommodate these environmental differences.
+
+We now need to publicly expose our frontend we application to a web browser. Like before, we expose the pods through a service.
+
+Enter **frontend-service** as the **Service name**, and select **Load Balancer** as the **Service Type**.
+
+:::hint
+**Concept explanation: ClusterIP, NodePort and LoadBalancer services**
+
+Kubernetes has three types of services.
+
+The ClusterIP service is the most basic. It will expose pods to other pods within the Kubernetes cluster, but does not offer an easy way to access the service from outside the cluster. ClusterIP services are a good option when pods service traffic to other pods in the cluster.
+
+A NodePort service exposes a service to external clients by opening a random port on each cluster node and directing external traffic to that port to the pods. The port is usually in the range 30000-32767. This is convenient for testing, but unusual port numbers can pose a problem for external clients behind firewalls.
+
+A LoadBalancer service is used to create a publicly accessible endpoint on a common port like 80 (HTTP) or 443 (HTTPS). The actual implementation of this public endpoint is left to the platform hosting the Kubernetes cluster. Most cloud providers like AWS, Azure and Google Cloud will create an instance of the respective load balancer solution they already offer for their platforms, and configure it to direct traffic into the Kubernetes cluster.
+:::
+
+Configure the service to expose port 80:
+
+![](frontend-serviceport.png "width=500")
+
+Save the changes, create a release, and deploy the release to the development environment.
+
+Once the deployment has succeeded, a public facing load balancer will be created that we can access in our browser to view the web application. In Google Cloud we can view the public IP address from the web console:
+
+![](loadbalancer-ip.png "width=500")
+
+Opening the IP address in our web browser display the web application we just deployed:
+
+![](webapp.png "width=500")
+
+## Promoting the deployment to the test environment
+
+
 
 ## Conclusion
