@@ -6,8 +6,6 @@ However, you only gain this confidence if the thing you are deploying to product
 
 By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
 
-In this chapter we will learn how to model environments in a Kubernetes cluster and then orchestrate repeatable deployments using Octopus.
-
 ## General deployment concepts
 
 To understand repeatable deployments, we need to understand what a deployment is, and at what point in a typical build and deployment pipeline deployments take place.

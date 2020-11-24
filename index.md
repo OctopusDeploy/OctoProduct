@@ -24,6 +24,17 @@
 * Pipelines
 * test result parsing
 
+## Seamless deployments
+
+* Recreate
+* Rolling
+* Blue/Green
+* Canary
+* Feature branch
+
+### Future work
+* pipelines
+
 ## Recoverable deployments
 
 * Database rollbacks (or not)
@@ -37,25 +48,20 @@
 * Subscriptions
 * Email / Slack notifications
 
-## Auditable deployments
+## Measureable deployments
 
-* Audit logs
-* Package metadata
+* Grafaba
+* Power BI
+* Excel
 
 ## Maintainable deployments
 
 * Runbooks
 
-## Seamless deployments
+## Auditable deployments
 
-* Recreate
-* Rolling
-* Blue/Green
-* Canary
-* Feature branch
-
-### Future work
-* pipelines
+* Audit logs
+* Package metadata
 
 ## Coordinated deployments
 
@@ -65,12 +71,6 @@
 
 ### Future work
 * Pipelines
-
-## Measureable deployments
-
-* Grafaba
-* Power BI
-* Excel
 
 ### Future goals
 
