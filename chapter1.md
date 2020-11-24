@@ -496,7 +496,7 @@ A Kubernetes pod is a collection of containers in a shared network space, and wi
 :::hint
 **Concept explanation: Containers**
 
-A container is based on a Docker image, and can be configured with numerous settings to customize the context win which the applications stored on the Docker image are run.
+A container is based on a Docker image, and can be configured with numerous settings to customize the context in which the applications stored on the Docker image are executed.
 :::
 
 :::hint
@@ -504,7 +504,7 @@ A container is based on a Docker image, and can be configured with numerous sett
 
 A Docker image is a static collection of files used as the base file system for a container.
 
-A container is an isolated executable context in which the applications from its base Docker image are run.
+A container is an isolated context in which the applications from its base Docker image are run.
 :::
 
 In the **Containers** section, click the **ADD CONTAINER** button.
@@ -515,19 +515,25 @@ Enter **postgres** for the image **Name**, select the **Docker Hub** feed we cre
 
 ![](container-image.png "width=500")
 
+*The container image details.*
+
 To access the database we need to expose a network port. Postgres uses port 5432. Under the **Ports** section, click the **ADD PORT** button, enter **database** as the **Name**, and **5432** as the **Port**:
 
 ![](container-port.png "width=500")
+
+*The container port details.*
 
 We configure the container with two environment variables. These are defined under the **Environment variables** section. Click the **ADD ENVIRONMENT VARIABLE** button to add the first environment variable. Set the **Name** to **POSTGRES_PASSWORD** and the **Value** to **#{Database Password}**. The value **#{Database Password}** references a variable that we will create in the next section.
 
 Add a second environment variable with a **Name** of **POSTGRES_USER** and a **Value** of **postgres**:
 
-![](container-environment-variables.png "width=500")
+![](container-environment-vars.png "width=500")
+
+*The container environment variables.*
 
 Click the **OK** button to save the container.
 
-We now need to expose the pods created the by the deployment via a service.
+We now need to expose the pods created by the deployment via a service.
 
 :::hint
 **Concept explanation: Service**
@@ -543,15 +549,19 @@ Under the **Service Ports** section, click the **ADD PORT** button. Enter **data
 
 ![](service-ports.png "width=500")
 
+*The database service port configuration.*
+
 Click the **OK** button to save the port details. Then click **SAVE** to save the step.
 
 ## Defining the variables
 
-The final thing to configure is the database password we referenced as the value of the **POSTGRES_PASSWORD** environment variable. Open the **Variables** section of the project, enter **Database Password** for the **Name**, click in the **Value** field, click the **CHANGE TYPE** button, and select the **Sensitive** option. Then enter **docker** for the **Value**.
+The final setting to configure is the database password we referenced as the value of the **POSTGRES_PASSWORD** environment variable. Open the **Variables** section of the project, enter **Database Password** for the **Name**, click in the **Value** field, click the **CHANGE TYPE** button, and select the **Sensitive** option. Then enter **docker** for the **Value**.
 
 Note how the variable value is hidden behind dots. You will not be able to view this password from the **Variables** section again once the password is saved. Click the **SAVE** button to save the new variable:
 
 ![](variables.png "width=500")
+
+*The database password saved as a sensitive variable.*
 
 ## Deploying the database
 
@@ -559,9 +569,11 @@ We now have everything in place to perform repeatable deployments of the backend
 
 You will be presented with a screen showing the release version, and the versions of any packages referenced by the deployment process. 
 
-In this example, our deployment process referenced the postgres Docker image from the Docker Hub feed. By default the latest package version is selected. The postgres image has a tag of `latest`, which is considered to be the latest version:
+In this example, our deployment process referenced the `postgres` Docker image from the Docker Hub feed. By default the latest package version is selected. The postgres image has a tag of `latest`, which is considered to be the latest version:
 
 ![](create-release.png "width=500")
+
+*The release creation screen.*
 
 :::hint
 **Concept link: Docker image tags and package versions**
@@ -575,7 +587,7 @@ Octopus requires that packages have comparable versions in order to determine th
 So from the point of view of Octopus, package versions and Docker tags are the same thing.
 :::
 
-The fact that we select the package versions when a release is created is significant. It means that the deployment process can remain unchanged as new packages are releases. This is an example of how Octopus builds repeatable deployments into the core of the product.
+The fact that we select the package versions when a release is created is significant. It means that the deployment process can remain unchanged as new packages are published. This is an example of how Octopus builds repeatable deployments into the core of the product.
 
 Click the **SAVE** button to create the release.
 
@@ -583,11 +595,15 @@ We now have a versioned release that captures the steps in the deployment proces
 
 ![](release.png "width=500")
 
-Click the **DEPLOY TO DEVELOPMENT...** button to being the process of deploying the release to the development environment. You will be presented with advanced options to change how the release is deployed, but we will accept the default values. 
+*The saved release version.*
+
+Click the **DEPLOY TO DEVELOPMENT...** button to begin the process of deploying the release to the development environment. You will be presented with advanced options to change how the release is deployed, but we will accept the default values. 
 
 Click the **DEPLOY** button to deploy the database to the Kubernetes cluster in the development environment. After a few moments, the deployment will complete successfully, and our Postgres database will be running in the development environment:
 
 ![](deployment-logs.png "width=500")
+
+*The completed Postgres database deployment.*
 
 ## Deploying the frontend application
 
@@ -599,57 +615,65 @@ Configure an image called **frontend** to download the Docker image **octopussam
 
 ![](frontend-image.png "width=500")
 
+*The frontend application image configuration.*
+
 Expose a port called **web** on port **80**:
 
 ![](frontend-ports.png "width=500")
+
+*The frontend application ports configuration.*
 
 Then configure the environment variable **POSTGRES_URL** to **jdbc:postgresql://database-service:5432/postgres** and the variable **SPRING_PROFILES_ACTIVE** to **#{Octopus.Environment.Name}**:
 
 ![](frontend-envvars.png "width=500")
 
+*The frontend application environment variables configuration.*
+
 :::hint
 **Concept link: Kubernetes services and internal network addresses**
 
-You will note that the frontend container is accessing a database on the hostname **database-service** and port **5432**.
+You will note that the frontend container is accessing a database with the hostname **database-service** and port **5432**.
 
 The hostname is the same name as the service we exposed the database pods with, and the port is the same number we configured in the service.
 
 Kubernetes services expose the pods behind them with the same hostname as the name of the service.
 :::
 
-The **SPRING_PROFILES_ACTIVE** environment variable configures the name of the Spring profile used by our sample Spring application called "Random Quotes". The name of the active profile is displayed by the web application, which means we will be able to observe the value of this environment variable as we progress the deployment through the environments.
+The **SPRING_PROFILES_ACTIVE** environment variable configures the name of the Spring profile used by our sample application called "Random Quotes". The name of the active profile is displayed by the web application, which means we will be able to observe the value of this environment variable as we progress the deployment through the environments.
 
 :::hint
 **Concept explanation: Spring**
 
-[Spring](https://spring.io/) is a popular Java framework for build web applications. Spring based applications have extensive support for configuration via environment variables.
+[Spring](https://spring.io/) is a popular Java framework for building web applications. Spring based applications have extensive support for configuration via environment variables.
 
 The sample application [Random Quotes](https://github.com/OctopusSamples/RandomQuotes-Java) is built on top of Spring.
 :::
 
-Note that we have set the value of the **SPRING_PROFILES_ACTIVE** environment variable to **#{Octopus.Environment.Name}**. The `Octopus.Environment.Name` variable is exposed by Octopus as the name of the environment that is being deployed to. We use this variable here as an example of an environment specific variable that customizes our deployment between environments.
+Note that we have set the value of the **SPRING_PROFILES_ACTIVE** environment variable to **#{Octopus.Environment.Name}**. The `Octopus.Environment.Name` variable is exposed by Octopus as the name of the environment that is being deployed to. We use this variable as an example of an environment specific variable that customizes our deployment as it is promoted through the lifecycle.
 
 Repeatable deployments means keeping your deployments as similar as possible between environments, but there will always be some environment specific configuration required in any real world application deployment. Environment specific variables is one way Octopus can accommodate these environmental differences.
 
-We now need to publicly expose our frontend we application to a web browser. Like before, we expose the pods through a service.
+We now need to publicly expose our frontend web application to a web browser. Like before, we expose the pods through a service.
 
 Enter **frontend-service** as the **Service name**, and select **Load Balancer** as the **Service Type**.
 
 :::hint
 **Concept explanation: ClusterIP, NodePort and LoadBalancer services**
 
-Kubernetes has three types of services.
+Kubernetes has three service types.
 
 The ClusterIP service is the most basic. It will expose pods to other pods within the Kubernetes cluster, but does not offer an easy way to access the service from outside the cluster. ClusterIP services are a good option when pods service traffic to other pods in the cluster.
 
 A NodePort service exposes a service to external clients by opening a random port on each cluster node and directing external traffic to that port to the pods. The port is usually in the range 30000-32767. This is convenient for testing, but unusual port numbers can pose a problem for external clients behind firewalls.
 
-A LoadBalancer service is used to create a publicly accessible endpoint on a common port like 80 (HTTP) or 443 (HTTPS). The actual implementation of this public endpoint is left to the platform hosting the Kubernetes cluster. Most cloud providers like AWS, Azure and Google Cloud will create an instance of the respective load balancer solution they already offer for their platforms, and configure it to direct traffic into the Kubernetes cluster.
+A LoadBalancer service is used to create a publicly accessible endpoint on a common port like 80 (HTTP) or 443 (HTTPS). The implementation of this public endpoint is left to the platform hosting the Kubernetes cluster. Most cloud providers like AWS, Azure and Google Cloud will create an instance of the respective load balancer solution they already offer for their platforms, and configure it to direct traffic into the Kubernetes cluster.
 :::
 
 Configure the service to expose port 80:
 
 ![](frontend-serviceport.png "width=500")
+
+*The frontend service port configuration.
 
 Save the changes, create a release, and deploy the release to the development environment.
 
@@ -657,36 +681,48 @@ Once the deployment has succeeded, a public facing load balancer will be created
 
 ![](loadbalancer-ip.png "width=500")
 
-Opening the IP address in our web browser display the web application we just deployed. Note the value that was assigned to the **SPRING_PROFILES_ACTIVE** environment variable is shown on the web page:
+*The load balancer service created ib the GKE cluster.*
+
+Opening the IP address in our web browser displays the web application we just deployed. Note the value that was assigned to the **SPRING_PROFILES_ACTIVE** environment variable is shown in the page footer:
 
 ![](webapp.png "width=500")
 
+*The frontend web application displayed in a browser.*
+
 ## Promoting the deployment to the test environment
 
-Now that we have successfully deployed our application to the development environment and verified that it works correctly, we can promote it to the test environment. This is as simple as clicking the **DEPLOY** button on the Octopus dashboard:
+Now that we have successfully deployed our application to the development environment and verified that it works correctly, we can promote it to the test environment. This is as simple as clicking the **DEPLOY...** button on the Octopus dashboard:
 
 ![](backend-test.png "width=500")
+
+*Deployments are promoted through the Octopus dashboard.*
 
 Likewise we can promote the frontend application to the test environment, which will create a new load balancer with a new public IP:
 
 ![](loadbalancer-ip-test.png "width=500")
 
-Opening the IP address in our web browser display the web application we just deployed, with the environment specific value assigned to the **SPRING_PROFILES_ACTIVE** environment variable displayed on the web page:
+*The public load balancer created for the frontend application in the test environment.*
+
+Opening the IP address in our web browser displays the web application we just deployed, with the environment specific value assigned to the **SPRING_PROFILES_ACTIVE** environment variable displayed in the web page footer:
 
 ![](webapp-test.png "width=500")
 
-That is how easy it is to promote a repeatable deployment to a new environment. Environment specific variables are applied as necessary, and we can be confident that the test environment is as close as possible to the applications we tested in the development environment.
+*The web application deployed to the test environment.*
+
+That is how easy it is to promote a repeatable deployment to a new environment. Environment specific variables are applied as necessary, and we can be confident that applications deployed to the test environment are as consistent as possible with the applications we tested in the development environment.
 
 ## Conclusion
 
-Repeatable deployments are a fundament pillar of any deployment workflow. By promoting the same code and settings to new environments, we can gain ever greater confidence that our deployments will deliver a working solution to the end user.
+Repeatable deployments are a fundamental pillar of any deployment workflow. By promoting the same code and settings to new environments, we can gain ever greater confidence that our deployments will deliver a working solution to the end user.
 
 In this chapter we:
-* Defined the meaning of Continuous Integration, Continuous Delivery and Continuous Deployments.
-* Defined what a deployment includes.
+* Defined the meaning of Continuous Integration, Continuous Delivery and Continuous Deployment.
+* Defined the components that make up a deployment.
 * Learned how to model environments in Kubernetes.
 * Learned how to create service accounts that provided access to a single namespace.
 * Configured Kubernetes accounts and targets in Octopus.
 * Deployed a sample application with a backend database and a frontend web application to Kubernetes.
-* Looked at environment specific variables.
+* Defined at environment specific variables.
 * Promoted the deployment to new environments.
+
+In the next chapter we will learn how to add automated and manual tests to our deployments.
