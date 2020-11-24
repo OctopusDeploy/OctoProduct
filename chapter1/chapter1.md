@@ -84,7 +84,7 @@ Now that we understand the basic concepts that are involved in a deployment, we 
 
 ### Modelling environments with Kubernetes
 
-There are two common methods to model environments in Kubernetes.
+Kubernetes has no native concept of environments. However, there are two common methods to model environments in Kubernetes.
 
 The first method to model environments is through the use of namespaces to partition a single cluster into many logical environments. 
 
@@ -119,7 +119,7 @@ For our sample deployment we will create service accounts for Octopus to use whe
 RBAC is implemented in Kubernetes through roles and role bindings. Specifically, [Kubernetes has four resources to define RBAC rules](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#api-overview):
 
 * Role: a namespace scoped resource that defines the allowed operations on resources in the role's namespace.
-* RoleBinding: a namespace scoped resource that maps a role in role binding's namespace to a user or service account.
+* RoleBinding: a namespace scoped resource that maps a role in the role binding's namespace to a user or service account.
 * ClusterRole: a cluster scoped resource that defines the allowed operations resources in all namespaces.
 * ClusterRoleBinding: a cluster scoped resource that maps a cluster role to a user or service account.
 
@@ -139,23 +139,23 @@ Octopus environments are used as a security boundary, allowing for specific user
 
 Targets, described in the next section, are scoped to specific environments, providing a link between the Octopus representation of an environment and the environment modelled in the external infrastructure.
 
-How deployments progress from one environment to the next is configured in a lifecycle. A lifecycle defines the order of environments that a deployment must be performed to. Lifecycles also allow deployments to some environments to be optional.
+How deployments progress from one environment to the next is configured in a lifecycle. A lifecycle defines the order of environments that a deployment must be performed in. Lifecycles also allow deployments to some environments to be optional.
 
 ### Modelling Kubernetes environments in Octopus
 
 Taken together, the combination of a cluster, account, and namespace represent a security boundary into which a deployment can be performed. In Octopus, this security boundary is represented as a Kubernetes target.
 
-The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, the credentials required to interact with the Kubernetes cluster, and teh categorization of the deployment that take place in those environments, which Octopus models as roles. 
+The Kubernetes target is the link between the physical (i.e. separate clusters) or logical (i.e. separate namespaces) Kubernetes environments, the Octopus environments, the credentials required to interact with the Kubernetes cluster, and the categorization of the deployment that take place in those environments, which Octopus models as roles. 
 
 :::hint
 **Concept explanation: Octopus role**
 
-You can think of a role as as a tag describing the the type of application being deployed (e.g. `frontend` or `backend`) or management task that is performed (e.g. `admin` or `query`).
+You can think of a role as a tag describing the the type of application being deployed (e.g. `frontend` or `backend`) or management task that is performed (e.g. `admin` or `query`).
 :::
 
 ## Repeatable deployments in practice
 
-To demonstrate repeatable deployments, we'll deploy a sample application with a frontend and backend component to the development, test, and production environments. We'll create the development and test environments in one Kubernetes cluster, and the production environment in a second Kubernetes cluster.
+To demonstrate repeatable deployments, we'll deploy a sample application with a frontend and backend component to the development, test, and production environments. We'll create the development and test environments in a shared Kubernetes cluster, and the production environment in a second, separate Kubernetes cluster.
 
 The infrastructure we'll create to host these deployments is shown below:
 
@@ -165,12 +165,12 @@ The infrastructure we'll create to host these deployments is shown below:
 
 ### An overview of the Kubernetes infrastructure
 
-Our deployments will be hosted by two Kubernetes clusters. The first hosts the development and test environments, while the second hosts the production environment.
+Our deployments will be hosted in two Kubernetes clusters. The first hosts the development and test environments, while the second hosts the production environment.
 
-Each cluster will have an initial administrative user account granting complete access to the cluster.
+Each cluster has an initial administrative user account granting complete access to the cluster.
 
 :::hint
-How the initial admin user is created is unique to each cluster, and often dependant on the options used when creating the cluster. Hosted Kubernetes providers like [AWS EKS](https://aws.amazon.com/eks/), [Azure AKS](https://azure.microsoft.com/en-au/services/kubernetes-service/) and [Google Cloud GKE](https://cloud.google.com/kubernetes-engine) all create these initial admin users in different ways.
+The creation of the initial admin user is unique to each cluster, and often dependant on the options used when creating the cluster. Hosted Kubernetes providers like [AWS EKS](https://aws.amazon.com/eks/), [Azure AKS](https://azure.microsoft.com/en-au/services/kubernetes-service/) and [Google Cloud GKE](https://cloud.google.com/kubernetes-engine) all create these initial admin users in different ways.
 
 This book uses GKE with basic authentication to create the initial admin user.
 :::
