@@ -42,12 +42,12 @@ Integration tests can be performed as part of a deployment as well as during the
 
 End to end tests provide an automated way of interacting with a system in the same way a user would. These can be long running tests following paths through the application that require most or all components of the application stack to be working correctly. Examples include:
 
-* Automating the interaction with a online store web application to browse an online catalogue, view an item, add it to a cart, complete the checkout, and review the account order history.
+* Automating the interaction with a online store to browse an online catalogue, view an item, add it to a cart, complete the checkout, and review the account order history.
 * Completing a series of API calls to a weather service to convert a city to a latitude and longitude, getting the current weather for the returned location, and returning the forecast for the rest of the week.
 
 Chaos testing involves deliberately removing or interfering with the components that make up an application to validate that the system is resilient enough to withstand such failures. Chaos testing may be combined with the other types of tests to verify the stability of a degraded system.
 
-Usability and acceptance testing typically require a human to use the application to verify that it meets their requirements. The requirements can be subjective, for example determining if the application is visually appealing. Or the testers may not be technical, and so do not have the option of automating the tests. The manual and subjective nature of these kinds of tests makes them difficult, if not impossible, to automate, meaning a working copy of the application or application stack must be deployed and made accessible to testers.
+Usability and acceptance testing typically require a human to use the application to verify that it meets their requirements. The requirements can be subjective, for example determining if the application is visually appealing. Or the testers may not be technical, and so do not have the option of automating the tests. The manual and subjective nature of these tests makes them difficult, if not impossible, to automate, meaning a working copy of the application or application stack must be deployed and made accessible to testers.
 
 
 
