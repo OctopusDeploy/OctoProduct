@@ -1,6 +1,6 @@
 ## Verifiable deployments
 
-In chapter 1 we saw how repeatable deployments across environments provided an increasing level of confidence that the solution delivered to the final consumer met all the requirements. We talked about how frequent deployments to the development environment enabled developers to test their changes, while less frequent deployments to the test environment allowed other parties to verify any changes. Once everyone was happy, the production environment is updated, exposing the changes to end users.
+The repeatable deployments pillar describes how promoting deployments through environments provided an increasing level of confidence that the solution delivered to the final consumer met all the requirements. We talked about how frequent deployments to the development environment enabled developers to test their changes, while less frequent deployments to the test environment allowed other parties to verify any changes. Once everyone was happy, the production environment is updated, exposing the changes to end users.
 
 In this chapter we'll explore the pillar of verifiable deployments, looking at the various techniques that can be used to verify a deployment once it has reached a new environment.
 
