@@ -1,91 +1,14 @@
-# Pragmatic deployments - Kubernetes Edition
+# The 10 pillars of pragmatic deployments
 
-## Foreward
-
-* Pragmatic not prescriptive
-
-## 1. Repeatable deployments
-
-* Distinction between CI and CD
-* Distinction between release and deployments
-* What are environments
-* What are tenants
-
-### Future goals
-* Pipelines
-
-## 2. Verifiable deployments
-
-* Smoke testing
-* Integration testing
-* E2E testing
-
-### Future goals
-* Pipelines
-* test result parsing
-
-## 3. Seamless deployments
-
-* Recreate
-* Rolling
-* Blue/Green
-* Canary
-* Feature branch
-
-### Future work
-* pipelines
-
-## 4. Recoverable deployments
-
-* Database rollbacks (or not)
-* Deployment rollback
-* Small deployments
-* Deploy a release
-
-## 5. Visible deployments
-
-* Dashboard
-* Subscriptions
-* Email / Slack notifications
-
-## 6. Measureable deployments
-
-* Grafaba
-* Power BI
-* Excel
-
-## 7. Auditable deployments
-
-* Audit logs
-* Package metadata
-
-## 8. Standardized deployments
-
-* Permissions (split between design and execution)
-* Tenants
-* Project cloning
-* Bento box
-* Pipelines
-* Config as code?
-
-### Future goals
-Composite step templates
-
-## 9. Maintainable deployments
-
-* Runbooks
-
-
-## Coordinated deployments
-
-* Deploy a release step
-* Manual intervention
-* Jira integration
-
-### Future work
-* Pipelines
-
-### Future goals
-
-* Integrated charts
+[Foreward](chapter0/index.md)
+[Repeatable deployments](chapter1/index.md)
+[Verifiable deployments](chapter2/index.md)
+[Seamless deployments](chapter3/index.md)
+[Recoverable deployments](chapter4/index.md)
+[Visible deployments](chapter5/index.md)
+[Measureable deployments](chapter6/index.md)
+[Auditable deployments](chapter7/index.md)
+[Standardized deployments](chapter8/index.md)
+[Maintainable deployments](chapter9/index.md)
+[Coordinated deployments](chapter10/index.md)
 
