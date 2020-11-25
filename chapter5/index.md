@@ -13,11 +13,11 @@ Listed below are a number of details required to gain full visibility into the s
 
 ## Commit messages
 
-Commit messages capture the intention of  source code changes, describing what changes were made and by whom. These messages can be invaluable when trying to understand at a low level what changes made it into a particular version of a package.
+Commit messages capture the intention of source code edits, describing what changes were made and by whom. These messages can be invaluable when trying to understand at a low level what changes made it into a particular version of a package.
 
 ## Issue tracking
 
-Often source code is changed to resolve an issue documented in a dedicated issue tracker. These issues provide a space for bugs to be described, discussed and tracked. Each issue will have a unique identifier to reference it by.
+Often source code commits are made to resolve an issue documented in a dedicated issue tracker. These issues provide a space for bugs to be described, discussed and tracked. Each issue can be referenced by a unique identifier.
 
 Capturing the issue IDs that relate to changes in a package version, and any deployment that includes that package version, provides insight into the issues that were resolved in any given deployment.
 
