@@ -34,10 +34,6 @@ If you read blogs and tweets on the subject of CI/CD, you may be left with the i
 
 So while the majority of the pillars described in this book apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
 
-:::hint
-Deployment strategies like microservices are challenging the notion of non-production and production environments. We'll explore this with the Seamless pillar in chapter 7.
-:::hint
-
 ### What is an environment?
 
 Environments represent the boundaries between copies of individual applications or entire application stacks and their supporting infrastructure. 
@@ -62,19 +58,15 @@ Although you are free to have any number of environments with any names, this bo
 
 We have talked about deploying "applications" to environments, which is typically how we describe deployments. But to appreciate how repeatable deployments are achieved, we first need to be specific about what we actually deploy.
 
-In Octopus there are three things that can be deployed to an environment:
+There are three things that can be deployed to an environment:
 
-1. The compiled applications (a Docker image in the case of a Kubernetes deployment) that are configured for a specific environment. Octopus refers to these as packages.
+1. The compiled applications that are configured for a specific environment. This are referred to as packages.
 2. The variables, usually with a small subset specific to individual environments, that define how the applications are configured.
 3. Scripts and configuration files written inline (i.e. not saved as files in packages) to support or configure the application and its associated infrastructure in an environment.
 
-Octopus represents the actions to be performed as part of a deployment with a deployment process. A deployment process contains a series of steps. These steps are configured with a combination of variables, package references and inline scripts and configuration files.
-
-Octopus then creates a release. The release is a versioned snapshot of the steps, their configuration, the variables, and the package versions that are to be deployed to an environment.
+The package versions, variable values, and scripts or configuration files are captured as a release.
 
 The release is then deployed to an environment. In this way a consistent bundle of packages, variables, scripts and configuration files are promoted from one environment to the next. Only a small subset of environment specific settings vary from one environment to the next.
-
-The core design of Octopus embraces the pillar of repeatable deployments. A static release is deployed to each environment, ensuring that each environment is as close as possible to the others.
 
 ## Links
 * [Foreward](../chapter0/index.md)
