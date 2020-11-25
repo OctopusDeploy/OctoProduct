@@ -12,7 +12,7 @@ To understand repeatable deployments, we need to understand what a deployment is
 
 ### Continuous Integration, Continuous Delivery and Continuous Deployment
 
-The terms Continuous Integration and Continuous Delivery or Deployment, or CI/CD, are frequently used to describe the progression from source code to publicly accessible application.
+The terms Continuous Integration and Continuous Delivery or Deployment (CI/CD) are frequently used to describe the progression from source code to publicly accessible application.
 
 We consider Continuous Integration (CI) to be the process of compiling, testing, packaging, and publishing an application as source code is updated.
 
@@ -28,9 +28,7 @@ The test environment is where quality assurance (QA) staff validate changes, pro
 
 The production environment is the final destination of a deployment, and is where applications are exposed to their final consumers. 
 
-If you read blogs and tweets on the subject of CI/CD, you may be left with the impression that continuous deployment is the holy grail, and continuous delivery is something of a poor substitute. However, what we have learned from most of our customers is that continuous delivery *works for them*. 
-
-So while the majority of the pillars described in this book apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
+We have learned from most of our customers that continuous delivery *works for them*. So while the majority of the pillars described in this book apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
 
 ### What is an environment?
 
