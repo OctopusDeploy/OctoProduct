@@ -1,10 +1,10 @@
 ## Measurable deployments
 
-Successfully getting your software into the hands of your customers is the primary goal of any deployment process. To understand how successful your deployment process is, you need to be able to measure those metrics that define success for you.
+Successfully getting your software into the hands of your customers is the primary goal of any deployment process. To understand how successful your deployment process is, you need to measure those metrics that define success for you.
 
 Having measurable deployments means defining a set of common and agreed upon metrics, reliably collecting those metrics, and surfacing them in an easy to understand format.
 
-Some common metrics that apply to deployments are listed below.
+Some common metrics that apply to deployments are listed below:
 
 * Deployment frequency - How frequently do you deploy to production?
 * Lead time for changes - How long does it take for a commit to be deployed into production?

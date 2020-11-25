@@ -13,17 +13,17 @@ Listed below are a number of details that need to be captured to gain full visib
 
 ## Commit messages
 
-Commit messages capture the intention of changes at the source code level, describing what changes were made and by whom. These messages can be invaluable when trying to understand at a low level what changes made it into a particular version of a package.
+Commit messages capture the intention of  source code changes, describing what changes were made and by whom. These messages can be invaluable when trying to understand at a low level what changes made it into a particular version of a package.
 
 ## Issue tracking
 
-Often source code is changed to resolve an issue documented in a dedicated issue tracker. These issues provide a space in which bugs can be described, discussed and tracked. Each issue will have a unique identifier to reference it by.
+Often source code is changed to resolve an issue documented in a dedicated issue tracker. These issues provide a space for bugs to be described, discussed and tracked. Each issue will have a unique identifier to reference it by.
 
 Capturing the issue IDs that relate to changes in a package version, and any deployment that includes that package version, provides insight into the issues that were resolved in any given deployment.
 
 ## CI build logs
 
-A typical CI/CD pipeline will have a CI server that builds, tests and packages an application. The log files for these builds contains a wealth of information like what tests passed, what tests were ignored, which dependencies were included, and what packages were created. A link to the CI build from the deployment allows these log files to be quickly reviewed.
+A typical CI/CD pipeline will have a CI server that builds, tests and packages an application. The log files for these builds contain a wealth of information such as which tests passed, which tests were ignored, which dependencies were included, and what packages were created. A link to the CI build from the deployment allows these log files to be quickly reviewed.
 
 ## Library dependencies
 
@@ -33,7 +33,7 @@ Almost every application deployed today is a combination of custom code and shar
 
 A release captures all of the above information, along with package versions, variable values and scripts, in a release version. This release is then deployed to an environment.
 
-Displaying which release versions are deployed to which environments provides an high level view of the state of your deployments. With this information anyone can see what was deployed where, and by drilling into the details of a release, can see the commit messages, issues, dependencies and link to the CI build.
+Displaying which release versions are deployed to which environments provides a high level view of the state of your deployments. With this information anyone can see what was deployed where, and by drilling into the details of a release, can see the commit messages, issues, dependencies and link to the CI build.
 
 ## Links
 * [Foreward](../chapter0/index.md)
