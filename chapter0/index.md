@@ -8,7 +8,7 @@ We use the phrase "pragmatic" quite deliberately. This book is not a score card,
 
 With that in mind, pillar number zero, and the prerequisite for all other pillars in this book, is *do what works for you*.
 
-We hope you enjoy this book, and look forward to shaping the future of pragmatic deployments with your feedback.
+We hope you enjoy this discussion, and look forward to shaping the future of pragmatic deployments with your feedback.
 
 Happy deployments!
 
