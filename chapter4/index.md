@@ -31,9 +31,10 @@ Rollbacks are also an explicit feature of several seamless deployment strategies
 Rollbacks have the following benefits:
 * A deployment issue can be fixed, without writing code, by rolling back to a previous deployment.
 * A rollback leaves the system in a known, verified state.
+* The time to complete a rollback should be consistent.
 
 Rollbacks have the following disadvantages:
-* They are all or nothing operations. You can not roll back individual features, only entire deployments.
+* Rollbacks are all or nothing operations. You can not roll back individual features, only entire deployments.
 * Rollbacks need to be tested as part of the deployment process to ensure they work as expected, which increases the complexity and time of the deployment process.
 * If a rollback fails, it is likely that the problem will be solved with a roll forward.
 * Database rollbacks require special consideration to ensure data is not lost.
@@ -46,8 +47,9 @@ Rolling forward the following benefits:
 * All deployments strategies, with or without a database, inherently support rolling forward.
 * Teams gain experience in rolling forward with every deployment.
 * You can choose the scope of a change or fix when rolling forward.
-* Multiple deployments can be made while rolling forward to resolve an undesirable deployment.
+* Multiple deployments can be made in succession while rolling forward to resolve an undesirable deployment.
 
 Rolling forward has the following disadvantages:
 * Rolling forward typically requires a developer to implement a fix to include in the next deployment.
 * Rolling forward may involve bypassing the environmental progression typically used to verify a deployment to get a fix deployed as quickly as possible.
+* The production environment will be left in an undesirable state for as long as it takes to develop and deploy the next version.
