@@ -52,7 +52,7 @@ The canonical set of environments are called development, test, and production. 
 | Test | Used by developers and other non-technical staff to validate changes meet requirements. | Medium | Medium |
 | Production | Accessed by end users to consume the publicly available instance of the applications. | Low | High |
 
-Although you are free to have any number of environments with any names, this book will use this set of environments in the examples.
+Although you are free to have any number of environments with any names, this set of environments will be used in the examples.
 
 ### What is a deployment?
 
