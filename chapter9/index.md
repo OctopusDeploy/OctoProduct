@@ -6,6 +6,7 @@ While you could SSH or RDP into a server and start poking around, each change yo
 
 Like deployments, maintenance tasks should be repeatable, verifiable, visible, measurable, and auditable. Maintenance tasks represent the business knowledge required to keep your deployments running, and should be held to the same standards as your deployment processes.
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

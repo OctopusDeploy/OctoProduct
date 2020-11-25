@@ -49,8 +49,7 @@ Chaos testing involves deliberately removing or interfering with the components 
 
 Usability and acceptance testing typically require a human to use the application to verify that it meets their requirements. The requirements can be subjective, for example determining if the application is visually appealing. Or the testers may not be technical, and so do not have the option of automating the tests. The manual and subjective nature of these tests makes them difficult, if not impossible, to automate, meaning a working copy of the application or application stack must be deployed and made accessible to testers.
 
-
-
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

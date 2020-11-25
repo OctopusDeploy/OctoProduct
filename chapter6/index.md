@@ -14,6 +14,7 @@ Some common metrics that apply to deployments are listed below.
 * Change fail rate - What is the ratio between hotfix deployments and regular deployments? 
 * Deployment duration - How long does each deployment take?
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

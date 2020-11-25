@@ -35,6 +35,7 @@ A release captures all of the above information, along with package versions, va
 
 Displaying which release versions are deployed to which environments provides an high level view of the state of your deployments. With this information anyone can see what was deployed where, and by drilling into the details of a release, can see the commit messages, issues, dependencies and link to the CI build.
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

@@ -1,6 +1,6 @@
 ## Recoverable deployments
 
-The aim of implementing repeatable and verifiable deployments that are tested in non-production environments before being released to production is to identify bugs before they can affect end users. However, some bugs will inevitably find their way to production. When they do, it is important to be able to be able to recover the production environment to a desirable state.
+The aim of implementing repeatable and verifiable deployments, tested in non-production environments before being released to production, is to identify bugs before they can affect end users. However, some bugs will inevitably find their way to production. When they do, it is important to restore the production environment to a desirable state.
 
 ## Rolling back or forward
 
@@ -26,7 +26,11 @@ When deployments involve database changes, it is recommended that you roll forwa
 
 With repeatable deployments, rolling back can be achieved by rerunning a previous deployment. This is possible because the package versions, scripts and variables are all defined by a repeatable deployment.
 
-Rollbacks are also an explicit feature of several seamless deployment strategies. Canary deployments implement rollbacks by allowing all traffic to be directed from the new deployment to the current deployment. Blue/green deployments can rollback a deployment by cutting traffic back to the blue stack. Session draining deployments can redirect new sessions to the current deployment, and optionally kill any sessions in the new deployment.
+Rollbacks are also an explicit feature of several seamless deployment strategies. 
+
+* Canary deployments implement rollbacks by allowing all traffic to be directed from the new deployment to the current deployment. 
+* Blue/green deployments can rollback a deployment by cutting traffic back to the blue stack. 
+* Session draining deployments can redirect new sessions to the current deployment, and optionally kill any sessions in the new deployment.
 
 Rollbacks have the following benefits:
 * A deployment issue can be fixed, without writing code, by rolling back to a previous deployment.
@@ -41,9 +45,9 @@ Rollbacks have the following disadvantages:
 
 ## Rolling forward
 
-Rolling forward is simply another way to describe performing a new deployment.
+Rolling forward is simply another way to describe performing a new deployment. In this case the new deployment will only contain the fixes required to restore an environment.
 
-Rolling forward the following benefits:
+Rolling forward has the following benefits:
 * All deployments strategies, with or without a database, inherently support rolling forward.
 * Teams gain experience in rolling forward with every deployment.
 * You can choose the scope of a change or fix when rolling forward.
@@ -54,6 +58,7 @@ Rolling forward has the following disadvantages:
 * Rolling forward may involve bypassing the environmental progression typically used to verify a deployment to get a fix deployed as quickly as possible.
 * The production environment will be left in an undesirable state for as long as it takes to develop and deploy the next version.
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

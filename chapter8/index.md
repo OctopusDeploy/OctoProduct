@@ -8,6 +8,7 @@ The first aspect is defining the initial deployment process that is used by the 
 
 The second aspect is defining who has the ability to edit a deployment process. By distinguishing between the ability to view, run, create, and edit a deployment process, teams can provide guarantees that only those individuals with the responsibility to create or edit deployment processes can do so.
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

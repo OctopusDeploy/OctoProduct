@@ -12,6 +12,7 @@ We hope you enjoy this book, and look forward to shaping the future of pragmatic
 
 Happy deployments!
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

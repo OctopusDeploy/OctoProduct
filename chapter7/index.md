@@ -4,6 +4,7 @@ If the visible pillar is about surfacing the current state of your environments 
 
 Auditing allows teams to see a history of deployments to environments, changes to deployment processes, changes to environments, who approved which deployments, and determine the state of an environment at some point in the past.
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

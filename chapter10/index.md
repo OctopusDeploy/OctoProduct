@@ -9,6 +9,8 @@ Actually deploying a package into an environment is just one small part of the d
 * High priority deployments take precedence over low priority ones.
 * Deployments are scheduled to take place at a predetermined time.
 
+
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)

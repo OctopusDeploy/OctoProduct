@@ -76,6 +76,7 @@ The release is then deployed to an environment. In this way a consistent bundle 
 
 The core design of Octopus embraces the pillar of repeatable deployments. A static release is deployed to each environment, ensuring that each environment is as close as possible to the others.
 
+## Links
 * [Foreward](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)
