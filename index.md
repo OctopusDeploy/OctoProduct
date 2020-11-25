@@ -54,14 +54,27 @@
 * Power BI
 * Excel
 
-## Maintainable deployments
-
-* Runbooks
-
-## Auditable deployments
+## 7. Auditable deployments
 
 * Audit logs
 * Package metadata
+
+## 8. Standardized deployments
+
+* Permissions (split between design and execution)
+* Tenants
+* Project cloning
+* Bento box
+* Pipelines
+* Config as code?
+
+### Future goals
+Composite step templates
+
+## 9. Maintainable deployments
+
+* Runbooks
+
 
 ## Coordinated deployments
 
@@ -76,14 +89,3 @@
 
 * Integrated charts
 
-## Standardized deployments
-
-* Permissions (split between design and execution)
-* Tenants
-* Project cloning
-* Bento box
-* Pipelines
-* Config as code?
-
-### Future goals
-Composite step templates

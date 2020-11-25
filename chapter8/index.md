@@ -1,1 +1,1 @@
-## Auditable deployments
+## Standardized deployments
