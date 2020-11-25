@@ -86,5 +86,14 @@ Octopus script steps inspect the exit code of the last completed command to dete
 
 Internal tests are executed by creating a new job resource in the cluster and waiting for it to complete. The status of the job can then be inspected to determine if the tests were successful or not.
 
-## Verifiable deployments in practice
-
+* [Foreward](chapter0/index.md)
+* [Repeatable deployments](chapter1/index.md)
+* [Verifiable deployments](chapter2/index.md)
+* [Seamless deployments](chapter3/index.md)
+* [Recoverable deployments](chapter4/index.md)
+* [Visible deployments](chapter5/index.md)
+* [Measureable deployments](chapter6/index.md)
+* [Auditable deployments](chapter7/index.md)
+* [Standardized deployments](chapter8/index.md)
+* [Maintainable deployments](chapter9/index.md)
+* [Coordinated deployments](chapter10/index.md)
