@@ -60,7 +60,7 @@ We have talked about deploying "applications" to environments, which is typicall
 
 There are three things that can be deployed to an environment:
 
-1. The compiled applications that are configured for a specific environment. This are referred to as packages.
+1. The compiled applications that are configured for a specific environment. These are referred to as packages.
 2. The variables, usually with a small subset specific to individual environments, that define how the applications are configured.
 3. Scripts and configuration files written inline (i.e. not saved as files in packages) to support or configure the application and its associated infrastructure in an environment.
 
