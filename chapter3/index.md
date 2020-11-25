@@ -1,6 +1,6 @@
 ## Seamless deployments
 
-Deploying new versions of your applications inevitably means taking the previous version offline and directing traffic to the new version. Ensuring end users are not adversely affected during this cutover requires some planning.
+Deploying new versions of your applications inevitably involves taking the previous version offline and directing traffic to the new version. Ensuring end users are not adversely affected during this cutover requires some planning.
 
 A logical solution is to perform public facing deployments at a time when end users are unlikely to be using the applications. If your customers are located in a similar timezone, deploying new versions of your application in the middle of the night effectively results in a seamless experience for end users.
 
@@ -14,7 +14,7 @@ No discussion on seamless deployments can begin without first addressing the iss
 
 A fundamental aspect of most seamless deployment strategies involves running two versions of your application side by side, if only for a short period of time. If both versions of the application access a shared database, then any updates to the database schema and data must be compatible with both application versions. This is referred to as backward and forward compatibility.
 
-However, backward and forward compatibility is not trivial to implement. In the presentation [Update your Database Schema with Zero Downtime Migrations](https://www.youtube.com/watch?v=3mj6Ni7sRN4) (based on chapter 3 of the book [Microservice database migration guide](https://developers.redhat.com/books/migrating-microservice-databases-relational-monolith-distributed-data)) Edison Yanaga walks through the process of renaming a single column in a database. It involves six incremental updates to the database and application code, and all six versions to be deployed sequentially.
+However, backward and forward compatibility is not trivial to implement. In the presentation [Update your Database Schema with Zero Downtime Migrations](https://www.youtube.com/watch?v=3mj6Ni7sRN4) (based on chapter 3 of the book [Migrating to Microservice Databases](https://developers.redhat.com/books/migrating-microservice-databases-relational-monolith-distributed-data)) Edison Yanaga walks through the process of renaming a single column in a database. It involves six incremental updates to the database and application code, and all six versions to be deployed sequentially.
 
 Needless to say, seamless deployments involving databases require planning, many small steps to roll out the changes, and tight coordination between the database and application code.
 
