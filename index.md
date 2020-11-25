@@ -4,7 +4,7 @@
 
 * Pragmatic not prescriptive
 
-## Repeatable deployments
+## 1. Repeatable deployments
 
 * Distinction between CI and CD
 * Distinction between release and deployments
@@ -14,7 +14,7 @@
 ### Future goals
 * Pipelines
 
-## Verifiable deployments
+## 2. Verifiable deployments
 
 * Smoke testing
 * Integration testing
@@ -24,7 +24,7 @@
 * Pipelines
 * test result parsing
 
-## Seamless deployments
+## 3. Seamless deployments
 
 * Recreate
 * Rolling
@@ -35,20 +35,20 @@
 ### Future work
 * pipelines
 
-## Recoverable deployments
+## 4. Recoverable deployments
 
 * Database rollbacks (or not)
 * Deployment rollback
 * Small deployments
 * Deploy a release
 
-## Visible deployments
+## 5. Visible deployments
 
 * Dashboard
 * Subscriptions
 * Email / Slack notifications
 
-## Measureable deployments
+## 6. Measureable deployments
 
 * Grafaba
 * Power BI
