@@ -42,15 +42,15 @@ The configuration of all environments should be as similar as possible to ensure
 
 Environments typically represent a progression from an initial environment with a high frequency of deployments and low stability through to the final environment with a low frequency of deployments and high stability.
 
-Deployments are progressed through environments to gain an increasing level of confidence that a working solution can be delivered to the final consumer.
+Deployments are progressed through environments to gain an increasing level of confidence that a working solution can be delivered to the end user.
 
 The canonical set of environments are called development, test, and production. The table below describes the characteristics of these environments:
 
 | Environment | Description | Deployment Frequency | Stability / Confidence |
 |-|-|-|-|
 | Development | Used by developers to test individual changes as they are implemented. | High | Low |
-| Test | Use by developers and other non-technical staff to validate changes meet requirements. | Medium | Medium |
-| Production | Used by customers to consume the publicly available instance of the applications. | Low | High |
+| Test | Used by developers and other non-technical staff to validate changes meet requirements. | Medium | Medium |
+| Production | Accessed by end users to consume the publicly available instance of the applications. | Low | High |
 
 Although you are free to have any number of environments with any names, this book will use this set of environments in the examples.
 
