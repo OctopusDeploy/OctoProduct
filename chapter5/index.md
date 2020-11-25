@@ -33,7 +33,7 @@ Almost every application deployed today is a combination of custom code and shar
 
 A release captures all of the above information, along with package versions, variable values and scripts, in a release version. This release is then deployed to an environment.
 
-Displaying which release versions are deployed to which environments provides a high level view of the state of your deployments. With this information anyone can see what was deployed where, and by drilling into the details of a release, can see the commit messages, issues, dependencies and link to the CI build.
+Displaying which release versions are deployed to which environments provides a high level view of the state of your deployments. With this information anyone can see what was deployed where, and by drilling into the details of a release, can see the commit messages, issues, dependencies and links to the CI builds.
 
 ## Links
 * [Foreward](../chapter0/index.md)
