@@ -2,14 +2,14 @@
 
 Deployments are an abstract concept, and it is difficult to know what has been deployed where by inspecting the state of a system. Determining what versions of an application are installed from the files on a disk or the records in a database is like working out the mix of colors that were used to produce a tin of paint.
 
-Being able to quickly view the state of your environments is critical to understanding: 
+Being able to quickly view the current state of your environments is critical to understanding: 
 
 * What features have been provided to your customers.
 * What features are being tested. 
 * What issues have been fixed.
 * The history of any changes.
 
-Listed below are a number of details that need to be captured to gain full visibility into the state of your deployments.
+Listed below are a number of details required to gain full visibility into the state of your deployments.
 
 ## Commit messages
 

@@ -28,19 +28,19 @@ With repeatable deployments, rolling back can be achieved by rerunning a previou
 
 Rollbacks are also an explicit feature of several seamless deployment strategies. 
 
-* Canary deployments implement rollbacks by allowing all traffic to be directed from the new deployment to the current deployment. 
+* Canary deployments implement rollbacks by redirecting all traffic from the new deployment to the current deployment. 
 * Blue/green deployments can rollback a deployment by cutting traffic back to the blue stack. 
 * Session draining deployments can redirect new sessions to the current deployment, and optionally kill any sessions in the new deployment.
 
 Rollbacks have the following benefits:
 * A deployment issue can be fixed, without writing code, by rolling back to a previous deployment.
 * A rollback leaves the system in a known, verified state.
-* The time to complete a rollback should be consistent.
+* The time to complete a rollback can be measured in non-production environments.
 
 Rollbacks have the following disadvantages:
 * Rollbacks are all or nothing operations. You can not roll back individual features, only entire deployments.
 * Rollbacks need to be tested as part of the deployment process to ensure they work as expected, which increases the complexity and time of the deployment process.
-* If a rollback fails, it is likely that the problem will be solved with a roll forward.
+* If a rollback fails, it is likely that you will need to resolve the issue by rolling forward.
 * Database rollbacks require special consideration to ensure data is not lost.
 
 ## Rolling forward
