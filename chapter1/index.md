@@ -22,11 +22,11 @@ Continuous deployments have no human intervention. You have achieved continuous 
 
 Continuous delivery involves a human making the decision to progress a deployment to the final consumers. This progression is typically represented as a promotion through a series of environments. A canonical example of environmental progression is to deploy applications to the non-production development and test environments, and finally the production environment. 
 
-A development environment may very well be configured with continuous deployments, where each commit that is successfully built by the CI server is automatically deployed with no human intervention. Once the developers are happy that their changes are suitable for a wider audience, a deployment can be promoted to the test environment.
+A development environment may very well be configured with continuous deployments, where each commit successfully built by the CI server is automatically deployed with no human intervention. Once the developers are happy that their changes are suitable for a wider audience, a deployment can be promoted to the test environment.
 
 The test environment is where quality assurance (QA) staff validate changes, product owners ensure functionality meets their requirements, security teams probe for vulnerabilities etc. Once everyone is happy that the changes meet their requirements, a deployment can be promoted to production.
 
-The production environment is the final destination of a deployment, and is where applications are exposed to their final consumers. 
+The production environment is the final destination of a deployment, and is where applications are exposed to end users. 
 
 We have learned from most of our customers that continuous delivery *works for them*. So while the majority of the pillars described in this book apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
 
