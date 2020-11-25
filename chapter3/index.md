@@ -16,7 +16,7 @@ A fundamental aspect of most seamless deployment strategies involves running two
 
 However, backward and forward compatibility is not trivial to implement. In the presentation [Update your Database Schema with Zero Downtime Migrations](https://www.youtube.com/watch?v=3mj6Ni7sRN4) (based on chapter 3 of the book [Migrating to Microservice Databases](https://developers.redhat.com/books/migrating-microservice-databases-relational-monolith-distributed-data)) Edison Yanaga walks through the process of renaming a single column in a database. It involves six incremental updates to the database and application code, and all six versions to be deployed sequentially.
 
-Needless to say, seamless deployments involving databases require planning, many small steps to roll out the changes, and tight coordination between the database and application code.
+Needless to say, seamless deployments involving databases require a great deal of planning, many small steps to roll out the changes, and tight coordination between the database and application code.
 
 ## Deployment strategies
 
@@ -30,7 +30,7 @@ Both options result in downtime during the time between the existing version bei
 
 ### Rolling updates
 
-The rolling update strategy involves incrementally updating instances of the current deployment with the new deployment. This strategy ensures there is always at least one instance of the current or new deployment available during the deployment. This means that any shared database must maintain backward and forward compatibility.
+The rolling update strategy involves incrementally updating instances of the current deployment with the new deployment. This strategy ensures there is always at least one instance of the current or new deployment available during the rollout. This requires that any shared database must maintain backward and forward compatibility.
 
 ### Canary deployments
 
@@ -64,7 +64,7 @@ In practice the deployment of a new application version with flaggable features 
 
 The feature branch strategy allows developers to deploy an application version with changes they are currently implementing, usually in a non-production environment, alongside the main deployment.
 
-It may not be necessary to maintain database backwards and forward compatibility with feature branch deployments. Because feature branches are for testing and tend to be short lived, it may be acceptable that each feature branch deployment have access to its own test database.
+It may not be necessary to maintain database backwards and forward compatibility with feature branch deployments. Because feature branches are for testing and tend to be short lived, it may be acceptable that each feature branch deployment has access to its own test database.
 
 ## Links
 * [Foreward](../chapter0/index.md)
