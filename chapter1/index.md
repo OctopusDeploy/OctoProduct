@@ -2,7 +2,7 @@
 
 One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing the end user with a working solution. This confidence can be built through testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test users, or any number of other processes that allow issues to be identified before they impact the final consumers of your deployments.
 
-However, you only gain this confidence if the thing you are deploying to production is as close as possible to thing you have been verifying in non-production.
+However, you only gain this confidence if the thing you are deploying to production is as close as possible to what you have been verifying in non-production.
 
 By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
 
@@ -12,11 +12,9 @@ To understand repeatable deployments, we need to understand what a deployment is
 
 ### Continuous Integration, Continuous Delivery and Continuous Deployment
 
-Before we dive into the details of how to implement repeatable deployments, we'll look at how this pillar fits into a CI/CD pipeline.
-
 The terms Continuous Integration and Continuous Delivery or Deployment, or CI/CD, are frequently used to describe the progression from source code to publicly accessible application.
 
-For the purpose of this book, we consider Continuous Integration (CI) to be the process of compiling, testing, packaging, and publishing an application as source code is updated. Specifically, in the case of Kubernetes deployments, CI is the process of packaging code as a Docker image and pushing it to a Docker registry, typically by a CI server.
+We consider Continuous Integration (CI) to be the process of compiling, testing, packaging, and publishing an application as source code is updated.
 
 Continuous Delivery and Continuous Deployment (both abbreviated to CD) have subtly different meanings. We treat both terms as an automated series of steps that deliver an application to its destination. The distinction is whether those automated steps deliver the application directly to the end consumer with no manual human intervention or decision making.
 
