@@ -1,8 +1,8 @@
 ## Repeatable deployments
 
-One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing the end user with a working solution. This confidence can be built through testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test users, or any number of other processes that allow issues to be identified before they impact the final consumers of your deployments.
+One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing a working solution to your end users. This confidence can be built through testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test users, or any number of other processes that allow issues to be identified before they impact your end users.
 
-However, you only gain this confidence if the thing you are deploying to production is as close as possible to what you have been verifying in non-production.
+However, you only gain this confidence if what you are deploying to production is as close as possible to what you have been verifying in non-production.
 
 By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
 
