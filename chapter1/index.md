@@ -28,7 +28,7 @@ The test environment is where quality assurance (QA) staff validate changes, pro
 
 The production environment is the final destination of a deployment, and is where applications are exposed to end users. 
 
-We have learned from most of our customers that continuous delivery *works for them*. So while the majority of the pillars described in this book apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
+We have learned from most of our customers that continuous delivery *works for them*. So while the majority of the pillars apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
 
 ### What is an environment?
 
