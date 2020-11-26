@@ -32,7 +32,7 @@ We have learned from most of our customers that continuous delivery *works for t
 
 ### What is an environment?
 
-Environments represent the boundaries between copies of individual applications or entire application stacks and their supporting infrastructure. 
+Environments represent the boundaries between copies of individual applications or entire application stacks combined with their supporting infrastructure. 
 
 The configuration of all environments should be as similar as possible to ensure that an application will behave consistently regardless of which environment it exists in.
 
