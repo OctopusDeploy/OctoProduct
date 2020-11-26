@@ -64,7 +64,7 @@ In practice the deployment of a new application version with flaggable features 
 
 The feature branch strategy allows developers to deploy an application version with changes they are currently implementing, usually in a non-production environment, alongside the main deployment.
 
-It may not be necessary to maintain database backwards and forward compatibility with feature branch deployments. Because feature branches are for testing and tend to be short lived, it may be acceptable that each feature branch deployment has access to its own test database.
+It may not be necessary to maintain database backward and forward compatibility with feature branch deployments. Because feature branches are for testing and tend to be short lived, it may be acceptable that each feature branch deployment has access to its own test database.
 
 ## Links
 * [Foreward](../chapter0/index.md)
