@@ -34,7 +34,7 @@ Integration tests can be performed as part of a deployment as well as during the
 
 End to end tests provide an automated way of interacting with a system in the same way a user would. These can be long running tests following paths through the application that require most or all components of the application stack to be working correctly. Examples include:
 
-* Automating the interaction with a online store to browse a catalogue, view an item, add it to a cart, complete the checkout, and review the account order history.
+* Automating the interaction with an online store to browse a catalogue, view an item, add it to a cart, complete the checkout, and review the account order history.
 * Completing a series of API calls to a weather service to find a city's latitude and longitude, getting the current weather for the returned location, and returning the forecast for the rest of the week.
 
 Chaos testing involves deliberately removing or interfering with the components that make up an application to validate that the system is resilient enough to withstand such failures. Chaos testing may be combined with other tests to verify the stability of a degraded system.
