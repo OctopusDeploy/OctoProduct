@@ -26,7 +26,7 @@ There are multiple strategies to manage a cutover between an existing deployment
 
 The recreate strategy does not provide a seamless deployment, but is included here as it is the default option for most deployment processes. This strategy involves either removing the existing deployment and deploying the new version, or deploying the new version over the top of the existing deployment.
 
-Both options result in downtime during the time between the existing version being stopped or removed and the new version being started. However, because the existing and new versions are not run concurrently, database upgrades can be applied as needed with no backward and forward compatibility requirements.
+Both options result in downtime during the period between the existing version being stopped or removed and the new version being started. However, because the existing and new versions are not run concurrently, database upgrades can be applied as needed with no backward and forward compatibility requirements.
 
 ### Rolling updates
 
