@@ -16,7 +16,7 @@ The terms Continuous Integration and Continuous Delivery or Deployment (CI/CD) a
 
 We consider Continuous Integration (CI) to be the process of compiling, testing, packaging, and publishing an application as source code is updated.
 
-Continuous Delivery and Continuous Deployment (both abbreviated to CD) have subtly different meanings. We treat both terms as an automated series of steps that deliver an application to its destination. The distinction is whether those automated steps deliver the application directly to the end consumer with no manual human intervention or decision making.
+Continuous Delivery and Continuous Deployment (both abbreviated to CD) have subtly different meanings. We treat both terms as an automated series of steps that deliver an application to its destination. The distinction is whether those automated steps deliver the application directly to the end user with no manual human intervention or decision making.
 
 Continuous deployments have no human intervention. You have achieved continuous deployments when a commit to your source code is compiled, tested and packaged by your CI server, and then deployed, tested and exposed to end users. The success or failure of each stage of this process is automatic, resulting in a commit-to-consumer workflow.
 
