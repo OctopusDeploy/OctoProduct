@@ -17,7 +17,7 @@ Commit messages capture the intention of source code edits, describing what chan
 
 ## Issue tracking
 
-Often source code commits are made to resolve an issue documented in a dedicated issue tracker. These issues provide a space for bugs to be described, discussed and tracked. Each issue can be referenced by a unique identifier.
+Often source code commits are made to resolve an issue documented in a dedicated issue tracker. These issues provide a space for bugs to be described, discussed and tracked. Each issue is referenced by a unique identifier.
 
 Capturing the issue IDs that relate to changes in a package version, and any deployment that includes that package version, provides insight into the issues that were resolved in any given deployment.
 
