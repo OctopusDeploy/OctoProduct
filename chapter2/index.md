@@ -12,7 +12,7 @@ Testing is a nebulous term with often ill-defined subcategories. We will not att
 
 Unit tests are considered part of the build pipeline. These tests are tightly coupled to the code being compiled, and must succeed for the resulting application package to be built. 
 
-Integration tests may also be run during the build process verify that higher level components interact as expected. The components under test may be replaced with a [test double](https://martinfowler.com/bliki/TestDouble.html) to improve reliability, or live instances of the components may be created as part of the test.
+Integration tests may also be run during the build process to verify that higher level components interact as expected. The components under test may be replaced with a [test double](https://martinfowler.com/bliki/TestDouble.html) to improve reliability, or live instances of the components may be created as part of the test.
 
 Unit and integration tests are run by the CI server, and any package that is made available for deployment is assumed to have passed all its associated unit and integration tests.
 
