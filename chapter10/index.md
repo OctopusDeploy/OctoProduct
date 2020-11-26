@@ -11,7 +11,7 @@ Deploying a package into an environment is just one small part of the deployment
 * Deployments can be triggered by external events.
 * Deployments can trigger external events.
 
-In practice a deployment processes may be a single component in a wider ecosystem of business process management tools. The ability to orchestrate deployments from third party platforms and report results back allows teams to manage complex deployments as part of a broader business process.
+In practice a deployment process may be a single component in a wider ecosystem of business process management tools. The ability to orchestrate deployments from third party platforms and report results back allows teams to manage complex deployments as part of a broader business process.
 
 ## Links
 * [Foreward](../chapter0/index.md)
