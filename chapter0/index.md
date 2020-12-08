@@ -4,7 +4,7 @@ As you might imagine, we spend a great deal of time at Octopus thinking about de
 
 This knowledge has been distilled into the 10 pillars of pragmatic deployments.
 
-We use the phrase "pragmatic" quite deliberately. This book is not a score card, a pyramid, a checklist, or a fixed list of requirements. In many cases Octopus, both as a product and as a company, have not achieved these pillars. One of the primary goals of developing these pillars was to find the gaps in our own processes in order to shape the features and philosophy of our product, and to continue the ongoing discussion about what it means to deploy software.
+We use the phrase "pragmatic" quite deliberately. This list is not a score card, a pyramid, a checklist, or a fixed list of requirements. In many cases Octopus, both as a product and as a company, have not achieved these pillars. One of the primary goals of developing these pillars was to find the gaps in our own processes in order to shape the features and philosophy of our product, and to continue the ongoing discussion about what it means to deploy software.
 
 With that in mind, pillar number zero, and the prerequisite for all other pillars in this book, is *do what works for you*.
 
