@@ -58,13 +58,13 @@ Rolling forward has the following disadvantages:
 * The production environment will be left in an undesirable state for as long as it takes to develop and deploy the next version.
 
 ## Links
-* [Foreward](../chapter0/index.md)
+* [Foreword](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)
 * [Seamless deployments](../chapter3/index.md)
 * [Recoverable deployments](../chapter4/index.md)
 * [Visible deployments](../chapter5/index.md)
-* [Measureable deployments](../chapter6/index.md)
+* [Measurable deployments](../chapter6/index.md)
 * [Auditable deployments](../chapter7/index.md)
 * [Standardized deployments](../chapter8/index.md)
 * [Maintainable deployments](../chapter9/index.md)

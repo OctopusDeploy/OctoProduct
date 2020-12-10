@@ -1,6 +1,6 @@
-## Foreward
+## Foreword
 
-As you might imagine, we spend a great deal of time at Octopus thinking about deployments. Octopus was born to manage real world deployment processes, and continues to be shaped to this day through conversations with customers, support requests, our own internal deployment requirements, and many discussions around what we think good deployments look like.
+As you might imagine, at Octopus, we spend a great deal of time thinking about deployments. Octopus was born to manage real world deployment processes, and continues to be shaped to this day through conversations with customers, support requests, our own internal deployment requirements, and many discussions around what we think good deployments look like.
 
 This knowledge has been distilled into the 10 pillars of pragmatic deployments.
 
@@ -13,13 +13,13 @@ We hope you enjoy this discussion, and look forward to shaping the future of pra
 Happy deployments!
 
 ## Links
-* [Foreward](../chapter0/index.md)
+* [Foreword](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)
 * [Seamless deployments](../chapter3/index.md)
 * [Recoverable deployments](../chapter4/index.md)
 * [Visible deployments](../chapter5/index.md)
-* [Measureable deployments](../chapter6/index.md)
+* [Measurable deployments](../chapter6/index.md)
 * [Auditable deployments](../chapter7/index.md)
 * [Standardized deployments](../chapter8/index.md)
 * [Maintainable deployments](../chapter9/index.md)

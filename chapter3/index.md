@@ -67,13 +67,13 @@ The feature branch strategy allows developers to deploy an application version w
 It may not be necessary to maintain database backward and forward compatibility with feature branch deployments. Because feature branches are for testing and tend to be short lived, it may be acceptable that each feature branch deployment has access to its own test database.
 
 ## Links
-* [Foreward](../chapter0/index.md)
+* [Foreword](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)
 * [Seamless deployments](../chapter3/index.md)
 * [Recoverable deployments](../chapter4/index.md)
 * [Visible deployments](../chapter5/index.md)
-* [Measureable deployments](../chapter6/index.md)
+* [Measurable deployments](../chapter6/index.md)
 * [Auditable deployments](../chapter7/index.md)
 * [Standardized deployments](../chapter8/index.md)
 * [Maintainable deployments](../chapter9/index.md)

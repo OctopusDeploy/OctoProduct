@@ -18,13 +18,13 @@ We consider Continuous Integration (CI) to be the process of compiling, testing,
 
 Continuous Delivery and Continuous Deployment (both abbreviated to CD) have subtly different meanings. We treat both terms as an automated series of steps that deliver an application to its destination. The distinction is whether those automated steps deliver the application directly to the end user with no manual human intervention or decision making.
 
-Continuous deployments have no human intervention. You have achieved continuous deployments when a commit to your source code is compiled, tested and packaged by your CI server, and then deployed, tested and exposed to end users. The success or failure of each stage of this process is automatic, resulting in a commit-to-consumer workflow.
+Continuous deployments have no human intervention. You have achieved continuous deployments when a commit to your source code is compiled, tested, and packaged by your CI server, and then deployed, tested and exposed to end users. The success or failure of each stage of this process is automatic, resulting in a commit-to-consumer workflow.
 
 Continuous delivery involves a human making the decision to progress a deployment to end users. This progression is typically represented as a promotion through a series of environments. A canonical example of environmental progression is to deploy applications to the non-production development and test environments, and finally the production environment. 
 
-A development environment may very well be configured with continuous deployments, where each commit successfully built by the CI server is automatically deployed with no human intervention. Once the developers are happy that their changes are suitable for a wider audience, a deployment can be promoted to the test environment.
+A development environment may very well be configured with continuous deployments, where each commit successfully built by the CI server is automatically deployed with no human intervention. When the developers are happy that their changes are suitable for a wider audience, a deployment can be promoted to the test environment.
 
-The test environment is where quality assurance (QA) staff validate changes, product owners ensure functionality meets their requirements, security teams probe for vulnerabilities etc. Once everyone is happy that the changes meet their requirements, a deployment can be promoted to production.
+The test environment is where quality assurance (QA) staff validate changes, product owners ensure functionality meets their requirements, security teams probe for vulnerabilities etc. When everyone is happy that the changes meet their requirements, a deployment can be promoted to production.
 
 The production environment is the final destination of a deployment, and is where applications are exposed to end users. 
 
@@ -45,7 +45,7 @@ The canonical set of environments are called development, test, and production. 
 | Environment | Description | Deployment Frequency | Stability / Confidence |
 |-|-|-|-|
 | Development | Used by developers to test individual changes as they are implemented. | High | Low |
-| Test | Used by developers and other non-technical staff to validate changes meet requirements. | Medium | Medium |
+| Test | Used by developers, QA, and non-technical staff to validate changes meet requirements. | Medium | Medium |
 | Production | Accessed by end users to consume the publicly available instance of the applications. | Low | High |
 
 Although you are free to have any number of environments with any names, this set of environments will be used in the examples.
@@ -65,13 +65,13 @@ The package versions, variable values, and scripts or configuration files are ca
 The release is then deployed to an environment. In this way a consistent bundle of packages, variables, scripts and configuration files are promoted from one environment to the next. Only a small subset of environment specific settings vary from one environment to the next.
 
 ## Links
-* [Foreward](../chapter0/index.md)
+* [Foreword](../chapter0/index.md)
 * [Repeatable deployments](../chapter1/index.md)
 * [Verifiable deployments](../chapter2/index.md)
 * [Seamless deployments](../chapter3/index.md)
 * [Recoverable deployments](../chapter4/index.md)
 * [Visible deployments](../chapter5/index.md)
-* [Measureable deployments](../chapter6/index.md)
+* [Measurable deployments](../chapter6/index.md)
 * [Auditable deployments](../chapter7/index.md)
 * [Standardized deployments](../chapter8/index.md)
 * [Maintainable deployments](../chapter9/index.md)
