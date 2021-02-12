@@ -1,10 +1,10 @@
 ## Repeatable deployments
 
-One of the primary reasons to progress a deployment through environments is to gain an increasing confidence that you are providing a working solution to your end users. This confidence can be built through testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test users, or any number of other processes that allow issues to be identified before they impact your end users.
+One of the primary reasons to progress a deployment through environments is to gain increasing confidence that you are providing a working solution to your end users. This confidence can be built through testing (both manual and automated), manual sign off, using your own software internally (drinking your own champagne), early releases to test users, or any number of other processes that allow issues to be identified before they impact your end users.
 
 However, you only gain this confidence if what you are deploying to production is as close as possible to what you have been verifying in non-production.
 
-By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying and gaining confidence in through your non-production environments.
+By embracing repeatable deployments, you can be sure that what your end users use in production is what you have been testing, verifying, and gaining confidence in through your non-production environments.
 
 ## General deployment concepts
 
@@ -20,13 +20,13 @@ Continuous Delivery and Continuous Deployment (both abbreviated to CD) have subt
 
 Continuous deployments have no human intervention. You have achieved continuous deployments when a commit to your source code is compiled, tested, and packaged by your CI server, and then deployed, tested and exposed to end users. The success or failure of each stage of this process is automatic, resulting in a commit-to-consumer workflow.
 
-Continuous delivery involves a human making the decision to progress a deployment to end users. This progression is typically represented as a promotion through a series of environments. A canonical example of environmental progression is to deploy applications to the non-production development and test environments, and finally the production environment. 
+Continuous delivery involves a human making the decision to progress a deployment to end users. This progression is typically represented as a promotion through a series of environments. A canonical example of environmental progression is to deploy applications to the non-production development and test environments, and finally to the production environment. 
 
 A development environment may very well be configured with continuous deployments, where each commit successfully built by the CI server is automatically deployed with no human intervention. When the developers are happy that their changes are suitable for a wider audience, a deployment can be promoted to the test environment.
 
-The test environment is where quality assurance (QA) staff validate changes, product owners ensure functionality meets their requirements, security teams probe for vulnerabilities etc. When everyone is happy that the changes meet their requirements, a deployment can be promoted to production.
+The test environment is where quality assurance (QA) staff validate changes, product owners ensure functionality meets their requirements, and security teams probe for vulnerabilities, etc. When everyone is happy that the changes meet their requirements, a deployment can be promoted to production.
 
-The production environment is the final destination of a deployment, and is where applications are exposed to end users. 
+The production environment is the final destination of a deployment, and this is where applications are exposed to end users.
 
 We have learned from most of our customers that continuous delivery *works for them*. So while the majority of the pillars apply equally well to continuous delivery and continuous deployment, we'll approach them from a continuous delivery point of view.
 
@@ -58,7 +58,7 @@ There are three things that can be deployed to an environment:
 
 1. The compiled applications that are configured for a specific environment. These are referred to as packages.
 2. The variables, usually with a small subset specific to individual environments, that define how the applications are configured.
-3. Scripts and configuration files written inline (i.e. not saved as files in packages) to support or configure the application and its associated infrastructure in an environment.
+3. Scripts and configuration files written inline (i.e., not saved as files in packages) to support or configure the application and its associated infrastructure in an environment.
 
 The package versions, variable values, and scripts or configuration files are captured as a release.
 
