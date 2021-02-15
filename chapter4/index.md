@@ -20,11 +20,11 @@ The blog post [Pitfalls with SQL rollbacks and automated database deployments](h
 
 > More often than not, the effort to successfully rollback a deployment far exceeds the effort it would take to push a fix to production.
 
-When deployments involve database changes, it is recommended that you roll forward to recover from an undesirable deployment.
+When deployments involve database changes, I recommended that you roll forward to recover from an undesirable deployment.
 
 ## Rolling back
 
-With repeatable deployments, rolling back can be achieved by rerunning a previous deployment. This is possible because the package versions, scripts and variables are all defined by a repeatable deployment.
+With repeatable deployments, rolling back can be achieved by rerunning a previous deployment. This is possible because the package versions, scripts, and variables are all defined by a repeatable deployment.
 
 Rollbacks are also an explicit feature of several seamless deployment strategies:
 * Canary deployments implement rollbacks by redirecting all traffic from the new deployment to the current deployment. 

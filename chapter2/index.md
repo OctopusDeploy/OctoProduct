@@ -8,9 +8,9 @@ The pillar of verifiable deployments describes the various techniques that can b
 
 Testing is a nebulous term with often ill-defined subcategories. We will not attempt to provide authoritative definitions of testing categories here. Our goal is to offer a very high level description of common testing practices, and highlight those that can be performed during the deployment process.
 
-### What do we not test during deployments?
+### What don't we test during deployments?
 
-Unit tests are considered part of the build pipeline. These tests are tightly coupled to the code being compiled, and must succeed for the resulting application package to be built. 
+Unit tests are considered part of the build pipeline. These tests are tightly coupled to the code being compiled, and they must succeed for the resulting application package to be built. 
 
 Integration tests may also be run during the build process to verify that higher level components interact as expected. The components under test may be replaced with a [test double](https://martinfowler.com/bliki/TestDouble.html) to improve reliability, or live instances of the components may be created as part of the test.
 

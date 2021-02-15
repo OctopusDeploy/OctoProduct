@@ -14,7 +14,7 @@ No discussion on seamless deployments can begin without first addressing the iss
 
 A fundamental aspect of most seamless deployment strategies involves running two versions of your application side by side, if only for a short period of time. If both versions of the application access a shared database, then any updates to the database schema and data must be compatible with both application versions. This is referred to as backward and forward compatibility.
 
-However, backward and forward compatibility is not trivial to implement. In the presentation [Update your Database Schema with Zero Downtime Migrations](https://www.youtube.com/watch?v=3mj6Ni7sRN4) (based on chapter 3 of the book [Migrating to Microservice Databases](https://developers.redhat.com/books/migrating-microservice-databases-relational-monolith-distributed-data)) Edison Yanaga walks through the process of renaming a single column in a database. It involves six incremental updates to the database and application code, and all six versions to be deployed sequentially.
+However, backward and forward compatibility is not trivial to implement. In the presentation [Update your Database Schema with Zero Downtime Migrations](https://www.youtube.com/watch?v=3mj6Ni7sRN4) (based on chapter 3 of the book [Migrating to Microservice Databases](https://developers.redhat.com/books/migrating-microservice-databases-relational-monolith-distributed-data)), Edison Yanaga walks through the process of renaming a single column in a database. It involves six incremental updates to the database and application code, and all six versions to be deployed sequentially.
 
 Needless to say, seamless deployments involving databases require a great deal of planning, many small steps to roll out the changes, and tight coordination between the database and application code.
 
@@ -36,21 +36,21 @@ The rolling update strategy involves incrementally updating instances of the cur
 
 The canary deployment strategy is similar to the rolling update strategy in that both incrementally expose more end users to the new deployment. The difference is that the decision to progress the rollout in a canary deployment is either made automatically by a system monitoring metrics and logs to ensure the new deployment is performing as expected, or manually by a human.
 
-Canary deployments also have the option to halt the rollout and revert back to the existing deployment if a problem was discovered.
+Canary deployments also have the option to halt the rollout and revert back to the existing deployment if a problem is discovered.
 
 ### Blue/green deployments
 
-The blue/green strategy involves deploying the new version (referred to as the green version) alongside the current version (referred to as the blue version), without exposing the green version to any traffic. Once the green version is deployed and verified, traffic is cutover from the blue to the green version. Once the blue version is no longer used, it can be removed.
+The blue/green strategy involves deploying the new version (referred to as the green version) alongside the current version (referred to as the blue version), without exposing the green version to any traffic. Once the green version is deployed and verified, traffic is cutover from the blue to the green version. When the blue version is no longer used, it can be removed.
 
 Any database changes deployed by the green version must maintain backward and forward compatibility, because even if the green version is not serving traffic, the blue version will be exposed to the database changes.
 
 ### Session draining
 
-The session draining strategy is used when applications maintains state tied to a particular application version.
+The session draining strategy is used when applications maintain states tied to a particular application version.
 
 This strategy is similar to the blue/green strategy in that both will deploy the new version alongside the current version, and run both side by side. Unlike the blue/green strategy, which will cut all traffic over to the new deployment in a single step, the session draining strategy will direct new sessions to the new deployment, while the existing deployment serves traffic to existing sessions.
 
-Once the old sessions have expired, the existing deployment can be deleted.
+After the old sessions have expired, the existing deployment can be deleted.
 
 Because the current and new deployments run side by side, any database changes must maintain backward and forward compatibility.
 
@@ -58,7 +58,7 @@ Because the current and new deployments run side by side, any database changes m
 
 The feature flag strategy involves building functionality into a new application version, and then exposing or hiding the feature for select end users outside of the deployment process.
 
-In practice the deployment of a new application version with flaggable features will be performed with one of the strategies above, so the feature flag strategy is a complement to those other strategies.
+In practice, the deployment of a new application version with flaggable features will be performed with one of the strategies above, so the feature flag strategy is a complement to those other strategies.
 
 ### Feature branch
 
